@@ -1,520 +1,609 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Untuk Kamu ❤️</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ASTER SAESTU - Legendary / Rare / Common</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #0b0a0e;
             min-height: 100vh;
-            background: linear-gradient(145deg, #f9d6e0, #c3a6d4);
-            font-family: 'Segoe UI', 'Poppins', sans-serif;
-            padding: 20px;
-            transition: background 0.6s;
+            padding: 1.5rem 1rem 4rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-
-        .card {
-            max-width: 620px;
+        .bg-hologram {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(120, 80, 255, 0.06) 0%, transparent 60%),
+                radial-gradient(circle at 80% 70%, rgba(255, 80, 200, 0.06) 0%, transparent 60%),
+                radial-gradient(circle at 50% 50%, rgba(0, 200, 255, 0.03) 0%, transparent 70%),
+                #0b0a0e;
+            pointer-events: none;
+        }
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 860px;
             width: 100%;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(14px);
-            border-radius: 56px;
-            padding: 40px 30px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15), 0 0 0 2px rgba(255, 255, 255, 0.6);
+        }
+        .header {
             text-align: center;
-            transition: all 0.5s ease;
-            animation: float 5s ease-in-out infinite;
+            margin-bottom: 1.2rem;
+            padding: 2rem 1rem 1.5rem;
+            border-radius: 2rem;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            position: relative;
+            overflow: hidden;
         }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
+        .header::before {
+            content: '';
+            position: absolute;
+            inset: -50%;
+            background: conic-gradient(from 0deg at 50% 50%,
+                    rgba(255, 0, 200, 0.03),
+                    rgba(0, 200, 255, 0.03),
+                    rgba(200, 0, 255, 0.03),
+                    rgba(255, 200, 0, 0.03),
+                    rgba(255, 0, 200, 0.03));
+            animation: rotateBg 20s linear infinite;
+            pointer-events: none;
         }
-
-        .heart-icon {
-            font-size: 68px;
-            animation: pulse 2s infinite;
-            display: inline-block;
+        @keyframes rotateBg {
+            to {
+                transform: rotate(360deg);
+            }
         }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.15); }
-            100% { transform: scale(1); }
-        }
-
-        h1 {
-            font-size: 2.3rem;
-            margin: 6px 0 4px;
-            background: linear-gradient(135deg, #d4145a, #6a1b9a);
+        .hologram-text {
+            position: relative;
+            z-index: 2;
+            font-size: clamp(2.8rem, 10vw, 4.8rem);
+            font-weight: 900;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            background: linear-gradient(135deg,
+                    #ff6bcd, #b366ff, #4dc9f6, #ff6bcd);
+            background-size: 300% 300%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            font-weight: 700;
+            animation: hologramShimmer 4s ease-in-out infinite alternate;
+            filter: drop-shadow(0 0 30px rgba(180, 100, 255, 0.25));
+            line-height: 1.1;
+        }
+        @keyframes hologramShimmer {
+            0% {
+                background-position: 0% 50%;
+                filter: drop-shadow(0 0 30px rgba(180, 100, 255, 0.25)) hue-rotate(0deg);
+            }
+            100% {
+                background-position: 100% 50%;
+                filter: drop-shadow(0 0 40px rgba(255, 100, 200, 0.25)) hue-rotate(-10deg);
+            }
+        }
+        .sub-hologram {
+            position: relative;
+            z-index: 2;
+            font-size: clamp(0.8rem, 2vw, 1rem);
+            color: rgba(255, 255, 255, 0.3);
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            margin-top: 0.4rem;
+            font-weight: 300;
+            background: linear-gradient(90deg,
+                    rgba(255, 200, 255, 0.15),
+                    rgba(200, 220, 255, 0.3),
+                    rgba(255, 200, 255, 0.15));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .sub {
-            font-size: 1rem;
-            background: rgba(255, 215, 245, 0.5);
-            padding: 5px 24px;
-            border-radius: 40px;
-            display: inline-block;
-            backdrop-filter: blur(4px);
-            color: #3d1f4a;
-            font-weight: 500;
-            margin-bottom: 16px;
-        }
-
-        .message-box {
-            background: rgba(255, 235, 245, 0.6);
-            border-radius: 32px;
-            padding: 24px 20px;
-            margin: 16px 0 20px;
-            border: 1px solid rgba(255, 255, 255, 0.7);
-            box-shadow: inset 0 0 25px rgba(255, 180, 210, 0.2);
-            min-height: 120px;
+        /* ─── navigasi menu ─── */
+        .nav-menu {
             display: flex;
-            align-items: center;
             justify-content: center;
-        }
-
-        .message-box p {
-            font-size: 1.1rem;
-            line-height: 1.7;
-            color: #2a1a33;
-            font-weight: 500;
-            margin: 0;
-        }
-
-        .highlight {
-            color: #b1125a;
-            font-weight: 700;
-        }
-
-        .tombol-nembak {
-            display: inline-block;
-            background: linear-gradient(135deg, #f093fb, #f5576c);
-            color: white;
-            font-size: 1.4rem;
-            font-weight: 600;
-            padding: 16px 44px;
-            border: none;
-            border-radius: 60px;
-            cursor: pointer;
-            box-shadow: 0 10px 28px rgba(245, 87, 108, 0.4);
-            transition: 0.25s;
-            margin: 6px 0 8px;
-            letter-spacing: 0.5px;
-        }
-
-        .tombol-nembak:hover {
-            transform: scale(1.05);
-            box-shadow: 0 15px 38px rgba(245, 87, 108, 0.6);
-        }
-
-        .tombol-nembak:active {
-            transform: scale(0.95);
-        }
-
-        /* Area jawaban (yes/no) */
-        .jawaban {
-            margin-top: 22px;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            animation: pop 0.5s ease;
-        }
-
-        .jawaban.show {
-            display: flex;
-        }
-
-        .jawaban .pertanyaan {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #2d1b3d;
-            background: rgba(255,255,240,0.5);
-            padding: 8px 20px;
-            border-radius: 40px;
-            backdrop-filter: blur(2px);
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 20px;
+            gap: 0.8rem;
+            margin-bottom: 0.8rem;
             flex-wrap: wrap;
-            justify-content: center;
-            margin-top: 4px;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 3rem;
+            padding: 0.5rem 1rem;
         }
-
-        .btn-yes, .btn-no {
-            border: none;
-            padding: 14px 36px;
-            border-radius: 60px;
-            font-size: 1.2rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.25s;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-            min-width: 130px;
-        }
-
-        .btn-yes {
-            background: #4CAF50;
-            color: white;
-        }
-        .btn-yes:hover {
-            background: #388E3C;
-            transform: scale(1.05);
-        }
-
-        .btn-no {
-            background: #ececec;
-            color: #333;
-        }
-        .btn-no:hover {
-            background: #d5d5d5;
-            transform: scale(1.03);
-        }
-
-        /* RESPON / HASIL AKHIR */
-        .result-box {
-            margin-top: 22px;
-            padding: 18px 14px;
-            border-radius: 40px;
-            min-height: 70px;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            animation: pop 0.6s ease;
-            width: 100%;
-        }
-
-        .result-box.show {
-            display: flex;
-        }
-
-        .result-box.success {
-            background: linear-gradient(145deg, #d4edda, #b7e4c7);
-            border: 2px solid #28a745;
-            box-shadow: 0 8px 30px rgba(40, 167, 69, 0.25);
-        }
-
-        .result-box.fail {
-            background: linear-gradient(145deg, #f8e1e4, #f5d0d6);
-            border: 2px solid #dc3545;
-            box-shadow: 0 8px 30px rgba(220, 53, 69, 0.2);
-        }
-
-        .result-text {
-            font-size: 1.7rem;
+        .nav-link {
+            display: inline-block;
+            padding: 0.4rem 1.2rem;
+            border-radius: 2rem;
             font-weight: 700;
-            line-height: 1.4;
+            font-size: 0.85rem;
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            letter-spacing: 0.06em;
+            border: 1px solid transparent;
+        }
+        .nav-link:hover {
+            color: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.04);
+        }
+        .nav-link.legendary-nav {
+            color: rgba(255, 215, 0, 0.5);
+        }
+        .nav-link.legendary-nav:hover,
+        .nav-link.legendary-nav.active {
+            color: #ffd700;
+            border-color: rgba(255, 215, 0, 0.2);
+            background: rgba(255, 215, 0, 0.06);
+        }
+        .nav-link.rare-nav {
+            color: rgba(255, 107, 203, 0.5);
+        }
+        .nav-link.rare-nav:hover,
+        .nav-link.rare-nav.active {
+            color: #ff6bcb;
+            border-color: rgba(255, 107, 203, 0.2);
+            background: rgba(255, 107, 203, 0.06);
+        }
+        .nav-link.common-nav {
+            color: rgba(74, 106, 143, 0.5);
+        }
+        .nav-link.common-nav:hover,
+        .nav-link.common-nav.active {
+            color: #7a9bcb;
+            border-color: rgba(74, 106, 143, 0.2);
+            background: rgba(74, 106, 143, 0.06);
         }
 
-        .result-sub {
-            font-size: 1.1rem;
+        /* ─── search bar ─── */
+        .search-wrap {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.2rem;
+        }
+        .search-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 0.6rem 1.2rem;
+            border-radius: 2.5rem;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.3s ease;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 0.02em;
+            backdrop-filter: blur(4px);
+        }
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.2);
+            font-family: 'Segoe UI', sans-serif;
+            letter-spacing: 0.04em;
+        }
+        .search-input:focus {
+            border-color: rgba(179, 102, 255, 0.3);
+            background: rgba(255, 255, 255, 0.06);
+            box-shadow: 0 0 30px rgba(179, 102, 255, 0.03);
+        }
+
+        .stat-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.6rem 1.2rem;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1.2rem;
+            padding: 0.7rem 1.6rem;
+            margin-bottom: 1.8rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+        }
+        .stat-bar .total {
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.75);
+        }
+        .stat-bar .total span {
+            color: #b366ff;
+            font-weight: 700;
+        }
+        .stat-badges {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .stat-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .stat-badge .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .dot-legendary {
+            background: #ffd700;
+            box-shadow: 0 0 12px rgba(255, 215, 0, 0.3);
+        }
+        .dot-rare {
+            background: #ff6bcb;
+            box-shadow: 0 0 12px rgba(255, 107, 203, 0.3);
+        }
+        .dot-common {
+            background: #4a6a8f;
+            box-shadow: 0 0 8px rgba(74, 106, 143, 0.15);
+        }
+        .stat-badge .label {
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.4);
+        }
+        .stat-badge .count {
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.85);
+        }
+        .stat-badge .count.legendary-count {
+            color: #ffd700;
+        }
+        .stat-badge .count.rare-count {
+            color: #ff6bcb;
+        }
+        .stat-badge .count.common-count {
+            color: #7a9bcb;
+        }
+        .wa-link-top {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: #4dc9f6;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.3rem 1rem;
+            border-radius: 2rem;
+            background: rgba(77, 201, 246, 0.06);
+            border: 1px solid rgba(77, 201, 246, 0.1);
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+        }
+        .wa-link-top:hover {
+            background: rgba(77, 201, 246, 0.14);
+            border-color: rgba(77, 201, 246, 0.25);
+            color: #7ddbff;
+        }
+        .wa-link-top svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .section-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            padding: 0.5rem 0.2rem 0.7rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            margin-top: 0.5rem;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+        }
+        .section-title.legendary-title {
+            color: rgba(255, 215, 0, 0.7);
+            border-bottom-color: rgba(255, 215, 0, 0.08);
+        }
+        .section-title.rare-title {
+            color: rgba(255, 107, 203, 0.7);
+            border-bottom-color: rgba(255, 107, 203, 0.08);
+        }
+        .section-title.common-title {
+            color: rgba(74, 106, 143, 0.5);
+            border-bottom-color: rgba(255, 255, 255, 0.03);
+        }
+
+        .item-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+            gap: 0.8rem;
+        }
+        .item-card {
+            display: block;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            padding: 0.9rem 1rem;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .item-card:hover {
+            transform: translateY(-3px) scale(1.01);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        }
+        .item-card.legendary {
+            border-color: rgba(255, 215, 0, 0.2);
+            background: rgba(255, 215, 0, 0.04);
+        }
+        .item-card.legendary:hover {
+            border-color: rgba(255, 215, 0, 0.5);
+            background: rgba(255, 215, 0, 0.07);
+            box-shadow: 0 8px 35px rgba(255, 215, 0, 0.05);
+        }
+        .item-card.rare {
+            border-color: rgba(255, 107, 203, 0.2);
+            background: rgba(255, 107, 203, 0.04);
+        }
+        .item-card.rare:hover {
+            border-color: rgba(255, 107, 203, 0.5);
+            background: rgba(255, 107, 203, 0.07);
+            box-shadow: 0 8px 35px rgba(255, 107, 203, 0.05);
+        }
+        .item-card.common {
+            border-color: rgba(255, 255, 255, 0.04);
+            background: rgba(255, 255, 255, 0.015);
+        }
+        .item-card.common:hover {
+            border-color: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+        }
+        .item-id {
+            font-size: 0.8rem;
             font-weight: 500;
-            margin-top: 6px;
-            opacity: 0.9;
+            color: rgba(255, 255, 255, 0.85);
+            letter-spacing: 0.02em;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            position: relative;
+            z-index: 1;
+        }
+        .item-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+        }
+        .item-price {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #b366ff;
+            background: rgba(179, 102, 255, 0.08);
+            padding: 0.1rem 0.6rem;
+            border-radius: 2rem;
+            border: 1px solid rgba(179, 102, 255, 0.08);
+            letter-spacing: 0.02em;
+        }
+        .item-price::before {
+            content: 'Rp ';
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.35);
+        }
+        .badge-legendary,
+        .badge-rare,
+        .badge-common {
+            font-size: 0.55rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 0.1rem 0.6rem;
+            border-radius: 2rem;
+            border: 1px solid transparent;
+        }
+        .badge-legendary {
+            color: #ffd700;
+            border-color: rgba(255, 215, 0, 0.2);
+            background: rgba(255, 215, 0, 0.06);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.05);
+        }
+        .badge-rare {
+            color: #ff6bcb;
+            border-color: rgba(255, 107, 203, 0.2);
+            background: rgba(255, 107, 203, 0.06);
+            box-shadow: 0 0 15px rgba(255, 107, 203, 0.05);
+        }
+        .badge-common {
+            color: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .item-card .click-hint {
+            font-size: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: rgba(255, 255, 255, 0.08);
+            font-weight: 400;
+            margin-left: auto;
+        }
+        .item-card:hover .click-hint {
+            color: rgba(255, 255, 255, 0.18);
         }
 
-        .result-box.success .result-text {
-            color: #155724;
+        .wa-float {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(37, 211, 102, 0.10);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(37, 211, 102, 0.15);
+            padding: 0.6rem 1rem 0.6rem 0.9rem;
+            border-radius: 3rem;
+            text-decoration: none;
+            color: #25d366;
+            font-weight: 600;
+            font-size: 0.8rem;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+            transition: all 0.3s ease;
         }
-        .result-box.fail .result-text {
-            color: #721c24;
+        .wa-float:hover {
+            transform: scale(1.05);
+            background: rgba(37, 211, 102, 0.16);
+            border-color: rgba(37, 211, 102, 0.3);
         }
-
-        .hidden {
-            display: none !important;
+        .wa-float svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+            flex-shrink: 0;
+        }
+        .wa-float .label {
+            display: none;
+        }
+        @media (min-width: 480px) {
+            .wa-float .label {
+                display: inline;
+            }
         }
 
         .footer {
-            margin-top: 28px;
+            margin-top: 2.5rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.06);
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+
+        .no-result {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.15);
+            padding: 2rem 0;
             font-size: 0.9rem;
-            color: #3d1f4a;
-            opacity: 0.7;
-            border-top: 1px solid rgba(255,255,255,0.4);
-            padding-top: 18px;
+            letter-spacing: 0.1em;
         }
 
-        /* Loading/Notifikasi */
-        .notification-badge {
-            display: none;
-            margin-top: 12px;
-            padding: 10px 20px;
-            background: rgba(37, 211, 102, 0.15);
-            border-radius: 30px;
-            font-size: 0.95rem;
-            color: #1a7a3a;
-            border: 1px solid #25d366;
-            animation: pop 0.5s ease;
+        @media (max-width: 540px) {
+            .item-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 0.6rem;
+            }
+            .item-card {
+                padding: 0.7rem 0.8rem;
+            }
+            .item-id {
+                font-size: 0.7rem;
+            }
+            .stat-bar {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+                padding: 0.7rem 1rem;
+            }
+            .stat-badges {
+                justify-content: center;
+            }
+            .nav-menu {
+                gap: 0.4rem;
+                padding: 0.4rem 0.6rem;
+            }
+            .nav-link {
+                font-size: 0.7rem;
+                padding: 0.25rem 0.7rem;
+            }
+            .search-input {
+                font-size: 0.8rem;
+                padding: 0.5rem 1rem;
+            }
+        }
+        @media (max-width: 390px) {
+            .item-grid {
+                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+                gap: 0.5rem;
+            }
+            .item-card {
+                padding: 0.5rem 0.6rem;
+            }
+            .item-id {
+                font-size: 0.6rem;
+            }
+            .item-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.2rem;
+            }
+        }
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(179, 102, 255, 0.2);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(179, 102, 255, 0.35);
         }
 
-        .notification-badge.show {
-            display: inline-block;
-        }
-
-        .whatsapp-btn {
-            display: inline-block;
-            margin-top: 12px;
-            padding: 10px 28px;
-            background: #25D366;
-            color: white;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
-            border: none;
-            cursor: pointer;
-        }
-
-        .whatsapp-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5);
-        }
-
-        @keyframes pop {
-            0% { transform: scale(0.6); opacity: 0; }
-            80% { transform: scale(1.02); }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        @media (max-width: 480px) {
-            .card { padding: 28px 16px; }
-            h1 { font-size: 1.9rem; }
-            .message-box p { font-size: 1rem; }
-            .tombol-nembak { font-size: 1.2rem; padding: 14px 30px; }
-            .btn-yes, .btn-no { padding: 12px 20px; min-width: 100px; font-size: 1rem; }
+        html {
+            scroll-behavior: smooth;
         }
     </style>
 </head>
 <body>
 
-<div class="card" id="card">
-    <!-- Ikon -->
-    <div class="heart-icon">💖</div>
-    <h1>Hai, Sayang!</h1>
-    <div class="sub">🌷 dari seseorang yang diam-diam naksir kamu</div>
+    <div class="bg-hologram"></div>
 
-    <!-- Kotak pesan -->
-    <div class="message-box">
-        <p id="surat">
-            Aku gak tahu harus mulai dari mana, tapi setiap kali lihat kamu, 
-            rasanya dunia jadi lebih cerah. <br>
-            <span class="highlight">Kamu itu luar biasa.</span> <br><br>
-            Aku udah gak bisa bohong lagi sama perasaan sendiri...
-        </p>
-    </div>
+    <div class="container">
 
-    <!-- Tombol Nembak -->
-    <button class="tombol-nembak" id="btnNembak">💌 Nembak Sekarang</button>
+        <header class="header">
+            <div class="hologram-text">ASTER SAESTU</div>
+            <div class="sub-hologram">✦ legendary · rare · common ✦</div>
+        </header>
 
-    <!-- Area jawaban (yes/no) -->
-    <div class="jawaban" id="areaJawaban">
-        <div class="pertanyaan">💕 Maukah kamu jadi pacarku?</div>
-        <div class="btn-group">
-            <button class="btn-yes" id="yesBtn">💖 Iya, mau!</button>
-            <button class="btn-no" id="noBtn">😔 Engga...</button>
+        <!-- ─── NAVIGASI MENU ─── -->
+        <div class="nav-menu">
+            <a href="#legendary-section" class="nav-link legendary-nav" id="navLegendary">★ LEGENDARY</a>
+            <a href="#rare-section" class="nav-link rare-nav" id="navRare">✦ RARE</a>
+            <a href="#common-section" class="nav-link common-nav" id="navCommon">▸ COMMON</a>
         </div>
-    </div>
 
-    <!-- Tempat hasil akhir (sukses / gagal) -->
-    <div class="result-box" id="resultBox">
-        <div class="result-text" id="resultText">💞</div>
-        <div class="result-sub" id="resultSub"></div>
-        <!-- Tombol WhatsApp akan muncul di sini jika jawaban YES -->
-        <div id="whatsappContainer"></div>
-    </div>
+        <!-- ─── SEARCH ─── -->
+        <div class="search-wrap">
+            <input type="text" class="search-input" id="searchInput" placeholder="🔍 Cari ID ..." autocomplete="off" />
+        </div>
 
-    <div class="footer">
-        🌹 dibuat khusus buat kamu, yang selalu bikin aku tersenyum 🌹
-    </div>
-</div>
-
-<script>
-    (function() {
-        const btnNembak = document.getElementById('btnNembak');
-        const areaJawaban = document.getElementById('areaJawaban');
-        const resultBox = document.getElementById('resultBox');
-        const resultText = document.getElementById('resultText');
-        const resultSub = document.getElementById('resultSub');
-        const surat = document.getElementById('surat');
-        const card = document.getElementById('card');
-        const yesBtn = document.getElementById('yesBtn');
-        const noBtn = document.getElementById('noBtn');
-        const pertanyaan = document.querySelector('.jawaban .pertanyaan');
-        const whatsappContainer = document.getElementById('whatsappContainer');
-
-        // Nomor WhatsApp tujuan (pakai kode negara)
-        const WA_NUMBER = '6285591495235';
-        const WA_MESSAGE = 'Halo! Aku mau jadi pacarmu! 💖';
-
-        // Pastikan elemen-elemen penting ada
-        if (!btnNembak || !areaJawaban || !resultBox || !surat) {
-            console.error('Ada elemen yang hilang!');
-            return;
-        }
-
-        // Fungsi untuk membuat link WhatsApp
-        function createWhatsAppLink() {
-            const encodedMessage = encodeURIComponent(WA_MESSAGE);
-            return `https://wa.me/${WA_NUMBER}?text=${encodedMessage}`;
-        }
-
-        // Fungsi untuk menampilkan tombol WhatsApp
-        function showWhatsAppButton() {
-            const waLink = createWhatsAppLink();
-            whatsappContainer.innerHTML = `
-                <a href="${waLink}" target="_blank" class="whatsapp-btn" id="waButton">
-                    💬 Hubungi Aku di WhatsApp
-                </a>
-                <div style="margin-top: 8px; font-size: 0.85rem; opacity: 0.7;">
-                    Klik untuk konfirmasi via WhatsApp ❤️
+        <!-- stat bar -->
+        <div class="stat-bar">
+            <div class="total">Total <span id="totalCount">0</span></div>
+            <div class="stat-badges">
+                <div class="stat-badge">
+                    <span class="dot dot-legendary"></span>
+                    <span class="label">Legendary</span>
+                    <span class="count legendary-count" id="legendaryCount">0</span>
                 </div>
-            `;
-            
-            // Tambahkan event listener untuk tracking (opsional)
-            const waButton = document.getElementById('waButton');
-            if (waButton) {
-                waButton.addEventListener('click', function(e) {
-                    console.log('💬 Tombol WhatsApp diklik!');
-                    // Bisa tambahkan analytics atau efek lain di sini
-                });
-            }
-        }
-
-        // Fungsi untuk mereset ke keadaan awal
-        function resetKeAwal() {
-            btnNembak.classList.remove('hidden');
-            areaJawaban.classList.remove('show');
-            resultBox.classList.remove('show', 'success', 'fail');
-            resultBox.style.display = 'none';
-            whatsappContainer.innerHTML = ''; // Kosongkan container WhatsApp
-            
-            surat.innerHTML = `
-                Aku gak tahu harus mulai dari mana, tapi setiap kali lihat kamu, 
-                rasanya dunia jadi lebih cerah. <br>
-                <span class="highlight">Kamu itu luar biasa.</span> <br><br>
-                Aku udah gak bisa bohong lagi sama perasaan sendiri...
-            `;
-            
-            yesBtn.style.display = 'inline-block';
-            noBtn.style.display = 'inline-block';
-            yesBtn.innerText = '💖 Iya, mau!';
-            yesBtn.style.background = '#4CAF50';
-            yesBtn.style.transform = 'scale(1)';
-            yesBtn.style.boxShadow = '0 6px 20px rgba(0,0,0,0.08)';
-            pertanyaan.style.display = 'block';
-            document.body.style.background = 'linear-gradient(145deg, #f9d6e0, #c3a6d4)';
-            card.style.boxShadow = '0 30px 60px rgba(0, 0, 0, 0.15), 0 0 0 2px rgba(255, 255, 255, 0.6)';
-        }
-
-        // === 1. Saat tombol "Nembak" diklik ===
-        btnNembak.addEventListener('click', function() {
-            this.classList.add('hidden');
-            areaJawaban.classList.add('show');
-            resultBox.classList.remove('show', 'success', 'fail');
-            resultBox.style.display = 'none';
-            whatsappContainer.innerHTML = ''; // Kosongkan container
-            
-            surat.innerHTML = `
-                Aku tahu ini mungkin agak tiba-tiba, tapi aku udah mikir panjang.
-                <br><span class="highlight">Kamu itu spesial banget buat aku.</span>
-                <br><br>Gak ada hari tanpa bayangin senyum kamu. 🥺
-            `;
-            
-            yesBtn.style.display = 'inline-block';
-            noBtn.style.display = 'inline-block';
-            yesBtn.innerText = '💖 Iya, mau!';
-            yesBtn.style.background = '#4CAF50';
-            yesBtn.style.transform = 'scale(1)';
-            yesBtn.style.boxShadow = '0 6px 20px rgba(0,0,0,0.08)';
-            pertanyaan.style.display = 'block';
-            document.body.style.background = 'linear-gradient(145deg, #f9d6e0, #c3a6d4)';
-            card.style.boxShadow = '0 30px 60px rgba(0, 0, 0, 0.15), 0 0 0 2px rgba(255, 255, 255, 0.6)';
-        });
-
-        // === 2. Tombol YES → DITERIMA ===
-        yesBtn.addEventListener('click', function() {
-            yesBtn.style.display = 'none';
-            noBtn.style.display = 'none';
-            pertanyaan.style.display = 'none';
-            
-            resultBox.style.display = 'flex';
-            resultBox.className = 'result-box show success';
-            resultText.innerHTML = '🎉 YES! DITERIMA! 🎉';
-            resultSub.innerHTML = 'Kamu baru saja membuatku menjadi orang paling bahagia di dunia. 💖<br>Mulai sekarang, kamu adalah pacarku! 🌹';
-            
-            // Tampilkan tombol WhatsApp
-            showWhatsAppButton();
-            
-            surat.innerHTML = `
-                <span style="font-size: 1.5rem;">🥳 KAMU MAU! 🥳</span>
-                <br><br>
-                Aku janji bakal jadi yang terbaik buat kamu. 
-                <br>Mulai sekarang, <span class="highlight">kamu adalah pacarku ❤️</span>
-                <br><br>
-                <span style="font-size: 0.9rem; opacity: 0.8;">
-                    📱 Konfirmasi via WhatsApp di bawah ya!
-                </span>
-            `;
-            
-            card.style.boxShadow = '0 0 50px rgba(40, 167, 69, 0.5), 0 0 0 3px #28a745';
-            document.body.style.background = 'linear-gradient(145deg, #c8e6c9, #a5d6a7)';
-        });
-
-        // === 3. Tombol NO → GAGAL ===
-        noBtn.addEventListener('click', function() {
-            yesBtn.style.display = 'none';
-            noBtn.style.display = 'none';
-            pertanyaan.style.display = 'none';
-            
-            resultBox.style.display = 'flex';
-            resultBox.className = 'result-box show fail';
-            resultText.innerHTML = '😔 GAGAL...';
-            resultSub.innerHTML = 'Aku terima keputusanmu. Tapi aku gak akan berhenti berharap.<br>💔 Mungkin lain kali, di waktu yang tepat. Aku tetap sayang kamu. 🌷';
-            
-            // Kosongkan container WhatsApp (tidak perlu tombol)
-            whatsappContainer.innerHTML = '';
-            
-            surat.innerHTML = `
-                <span style="font-size: 1.4rem;">😢 Baiklah, aku terima...</span>
-                <br><br>
-                Aku akan tetap di sini, buat kamu yang selalu spesial. 
-                <br><span class="highlight">Kamu berhak bahagia, walau tanpa aku.</span>
-                <br><br>💌 Aku tetap sayang kamu, selamanya.
-            `;
-            
-            card.style.boxShadow = '0 0 40px rgba(220, 53, 69, 0.3), 0 0 0 3px #dc3545';
-            document.body.style.background = 'linear-gradient(145deg, #fce4e4, #f3c5c9)';
-        });
-
-        // Inisialisasi: pastikan resultBox tersembunyi
-        resultBox.style.display = 'none';
-        areaJawaban.classList.remove('show');
-        pertanyaan.style.display = 'block';
-        whatsappContainer.innerHTML = '';
-
-        console.log('💕 Siap! Klik "Nembak Sekarang" untuk memulai.');
-        console.log(`📱 Nomor WhatsApp tujuan: ${WA_NUMBER}`);
-    })();
-</script>
-
-</body>
-    </html>
+                <div class="stat-badge">
+                    <span class="dot dot-rare"></span>
+                    <span class="label">Rare</span>
+                    <span class="count rare-count" id="rareCount">0</span>
+                </div>
+                <div class="stat-badge">
+                    <span class="dot dot-common"></span>
+                    <span class="label">Common</span>
+                    <span class="count common-count" id="commonCount">0</span>
+                </div>
+                <a href="https://wa.me/6285591495235" target="_blank" class="wa-link-top" rel="noopener">
+                    <svg viewBox="0 0 24 24"><path d="M12.032 21.965c-1.821 0-3.585-.474-5.118-1.378l-
