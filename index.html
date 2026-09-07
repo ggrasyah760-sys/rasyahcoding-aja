@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login & Registrasi</title>
+    <title>Login & Registrasi + Persetujuan Owner</title>
     <style>
         * {
             margin: 0;
@@ -23,7 +23,7 @@
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
             padding: 40px 30px;
-            max-width: 450px;
+            max-width: 550px;
             width: 100%;
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
             transition: all 0.3s ease;
@@ -97,6 +97,19 @@
         .btn-secondary:hover {
             background: #495057;
         }
+        .btn-owner {
+            background: #fd7e14;
+            color: #fff;
+        }
+        .btn-owner:hover {
+            background: #e06b0a;
+        }
+        .btn-sm {
+            padding: 8px 14px;
+            font-size: 13px;
+            width: auto;
+            margin: 0 4px;
+        }
         .switch-link {
             text-align: center;
             margin-top: 20px;
@@ -128,6 +141,11 @@
             color: #721c24;
             border-color: #f5c6cb;
         }
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border-color: #ffeeba;
+        }
         .dashboard-info {
             background: #e9ecef;
             border-radius: 10px;
@@ -143,6 +161,30 @@
             color: #28a745;
             font-weight: 700;
             font-size: 1.2em;
+        }
+        .pending-list {
+            margin: 15px 0;
+            max-height: 250px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 8px;
+        }
+        .pending-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 10px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .pending-item:last-child {
+            border-bottom: none;
+        }
+        .pending-item .info {
+            font-size: 14px;
+        }
+        .pending-item .info strong {
+            color: #1e3c72;
         }
         .note {
             font-size: 13px;
@@ -160,6 +202,28 @@
         .btn-group .btn {
             flex: 1;
             min-width: 120px;
+        }
+        .divider {
+            margin: 12px 0;
+            text-align: center;
+            color: #888;
+            font-size: 13px;
+            position: relative;
+        }
+        .divider::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 100%;
+            height: 1px;
+            background: #ddd;
+        }
+        .divider span {
+            background: #fff;
+            padding: 0 12px;
+            position: relative;
+            z-index: 1;
         }
         @media (max-width: 480px) {
             .container { padding: 25px 18px; }
@@ -184,6 +248,10 @@
             </div>
             <button type="submit" class="btn">Masuk</button>
         </form>
+
+        <div class="divider"><span>atau</span></div>
+        <button id="ownerLoginBtn" class="btn btn-owner">👑 Login sebagai Owner</button>
+
         <div class="switch-link">
             Belum punya akun? <a href="#" id="showRegister">Daftar di sini</a>
         </div>
@@ -218,13 +286,22 @@
         <div id="registerMessage" class="hidden"></div>
     </div>
 
-    <!-- DASHBOARD (setelah login) -->
+    <!-- DASHBOARD (USER BIASA & OWNER) -->
     <div id="dashboardSection" class="hidden">
-        <h2>👤 Dashboard</h2>
+        <h2 id="dashboardTitle">👤 Dashboard</h2>
         <div id="userInfo" class="dashboard-info">
             <strong>Nama:</strong> <span id="dashName"></span><br>
             <strong>UID:</strong> <span id="dashUid"></span><br>
             <strong>💰 Saldo:</strong> <span id="dashBalance" class="balance">Rp 0</span>
+        </div>
+
+        <!-- Area khusus Owner: daftar pending -->
+        <div id="ownerPanel" class="hidden">
+            <h3 style="color:#1e3c72; margin:10px 0;">📋 Daftar Pengguna Menunggu Persetujuan</h3>
+            <div id="pendingList" class="pending-list">
+                <p style="color:#888; text-align:center; padding:10px;">Tidak ada pengguna menunggu</p>
+            </div>
+            <button id="refreshPendingBtn" class="btn btn-secondary btn-sm" style="margin-top:5px;">🔄 Refresh</button>
         </div>
 
         <div class="btn-group">
@@ -235,7 +312,7 @@
 
         <div id="dashboardMessage" class="hidden"></div>
         <div class="note">
-            <small>Verifikasi akan mengirim data Anda ke WhatsApp owner untuk persetujuan.</small>
+            <small>Verifikasi akan mengirim data Anda ke WhatsApp owner untuk persetujuan (opsional).</small>
         </div>
     </div>
 
@@ -243,7 +320,7 @@
 
 <script>
     (function() {
-        // --- Inisialisasi akun OWNER jika belum ada ---
+        // --- INISIALISASI AKUN OWNER ---
         function initOwner() {
             const ownerUid = 'owner';
             if (!localStorage.getItem('user_' + ownerUid)) {
@@ -251,10 +328,11 @@
                     name: 'Owner',
                     uid: ownerUid,
                     password: 'owner123',
-                    balance: 999999999
+                    balance: 999999999,
+                    approved: true  // owner otomatis approved
                 };
                 localStorage.setItem('user_' + ownerUid, JSON.stringify(ownerData));
-                console.log('✅ Akun Owner telah dibuat dengan saldo Rp 999.999.999');
+                console.log('✅ Akun Owner dibuat');
             }
         }
         initOwner();
@@ -278,6 +356,13 @@
         const deleteBtn = document.getElementById('deleteBtn');
         const verifyBtn = document.getElementById('verifyBtn');
         const logoutBtn = document.getElementById('logoutBtn');
+        const ownerLoginBtn = document.getElementById('ownerLoginBtn');
+
+        // Elemen owner panel
+        const ownerPanel = document.getElementById('ownerPanel');
+        const pendingList = document.getElementById('pendingList');
+        const refreshPendingBtn = document.getElementById('refreshPendingBtn');
+        const dashboardTitle = document.getElementById('dashboardTitle');
 
         // --- Utility ---
         function resetMessages() {
@@ -295,10 +380,81 @@
             el.classList.remove('hidden');
         }
 
-        // --- Kirim WA ---
         function sendWA(phone, text) {
             const waLink = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
             window.open(waLink, '_blank');
+        }
+
+        // --- Tampilkan daftar pending untuk owner ---
+        function renderPendingList() {
+            const allUsers = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith('user_')) {
+                    try {
+                        const user = JSON.parse(localStorage.getItem(key));
+                        if (user.uid !== 'owner' && user.approved === false) {
+                            allUsers.push(user);
+                        }
+                    } catch (e) {}
+                }
+            }
+
+            if (allUsers.length === 0) {
+                pendingList.innerHTML = `<p style="color:#888; text-align:center; padding:10px;">✅ Tidak ada pengguna menunggu persetujuan</p>`;
+                return;
+            }
+
+            let html = '';
+            allUsers.forEach(user => {
+                html += `
+                    <div class="pending-item" data-uid="${user.uid}">
+                        <div class="info">
+                            <strong>${user.name}</strong> (UID: ${user.uid})
+                        </div>
+                        <div>
+                            <button class="btn btn-success btn-sm approve-btn" data-uid="${user.uid}">✔ Setujui</button>
+                            <button class="btn btn-danger btn-sm reject-btn" data-uid="${user.uid}">✖ Tolak</button>
+                        </div>
+                    </div>
+                `;
+            });
+            pendingList.innerHTML = html;
+
+            // Event listener untuk tombol setujui
+            pendingList.querySelectorAll('.approve-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const uid = this.dataset.uid;
+                    approveUser(uid);
+                });
+            });
+
+            pendingList.querySelectorAll('.reject-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const uid = this.dataset.uid;
+                    rejectUser(uid);
+                });
+            });
+        }
+
+        // --- Fungsi approve user (owner) ---
+        function approveUser(uid) {
+            const key = 'user_' + uid;
+            const stored = localStorage.getItem(key);
+            if (!stored) return;
+            const user = JSON.parse(stored);
+            user.approved = true;
+            localStorage.setItem(key, JSON.stringify(user));
+            showMessage(dashboardMessage, `✅ Pengguna ${user.name} (${uid}) telah disetujui.`, 'alert');
+            renderPendingList(); // refresh
+        }
+
+        // --- Fungsi reject user (tolak → hapus) ---
+        function rejectUser(uid) {
+            if (!confirm(`Tolak pengguna dengan UID ${uid}? Data akan dihapus.`)) return;
+            localStorage.removeItem('user_' + uid);
+            showMessage(dashboardMessage, `❌ Pengguna ${uid} ditolak dan dihapus.`, 'alert');
+            renderPendingList();
         }
 
         // --- Toggle form ---
@@ -318,7 +474,83 @@
             resetMessages();
         });
 
-        // --- Registrasi (saldo awal 0) ---
+        // --- Fungsi login (digunakan oleh form dan owner) ---
+        function performLogin(uid, password) {
+            const key = 'user_' + uid;
+            const stored = localStorage.getItem(key);
+            if (!stored) {
+                showMessage(loginMessage, 'UID tidak ditemukan. Silakan daftar.', 'alert alert-error');
+                return false;
+            }
+            const user = JSON.parse(stored);
+            if (user.password !== password) {
+                showMessage(loginMessage, 'Password salah!', 'alert alert-error');
+                return false;
+            }
+
+            // Cek status approved (kecuali owner)
+            if (uid !== 'owner' && user.approved !== true) {
+                showMessage(loginMessage, '⚠️ Akun Anda belum disetujui oleh owner. Tunggu persetujuan.', 'alert alert-warning');
+                return false;
+            }
+
+            // === Login sukses ===
+            loginSection.classList.add('hidden');
+            registerSection.classList.add('hidden');
+            dashboardSection.classList.remove('hidden');
+
+            dashName.textContent = user.name;
+            dashUid.textContent = user.uid;
+            dashBalance.textContent = 'Rp ' + user.balance.toLocaleString('id-ID');
+
+            // Tampilkan panel owner jika owner
+            if (uid === 'owner') {
+                dashboardTitle.textContent = '👑 Dashboard Owner';
+                ownerPanel.classList.remove('hidden');
+                renderPendingList();
+                // Sembunyikan tombol verifikasi untuk owner (tidak perlu)
+                verifyBtn.style.display = 'none';
+            } else {
+                dashboardTitle.textContent = '👤 Dashboard User';
+                ownerPanel.classList.add('hidden');
+                verifyBtn.style.display = 'block';
+            }
+
+            // Simpan data user yang login untuk operasi hapus/verifikasi
+            dashboardSection.dataset.currentUid = user.uid;
+            dashboardSection.dataset.currentName = user.name;
+            dashboardSection.dataset.currentBalance = user.balance;
+
+            loginForm.reset();
+            resetMessages();
+            return true;
+        }
+
+        // --- Login form biasa ---
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            resetMessages();
+            const uid = document.getElementById('loginUid').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+            if (!uid || !password) {
+                showMessage(loginMessage, 'UID dan password harus diisi!', 'alert alert-error');
+                return;
+            }
+            performLogin(uid, password);
+        });
+
+        // --- Login sebagai Owner (langsung) ---
+        ownerLoginBtn.addEventListener('click', function() {
+            resetMessages();
+            const success = performLogin('owner', 'owner123');
+            if (!success) {
+                // Jika gagal (misal data hilang), buat ulang dan coba lagi
+                initOwner();
+                performLogin('owner', 'owner123');
+            }
+        });
+
+        // --- Registrasi (default approved = false) ---
         registerForm.addEventListener('submit', function(e) {
             e.preventDefault();
             resetMessages();
@@ -345,57 +577,30 @@
                 return;
             }
 
-            const userData = { name, uid, password, balance: 0 };
+            // Simpan user dengan approved = false
+            const userData = {
+                name: name,
+                uid: uid,
+                password: password,
+                balance: 0,
+                approved: false
+            };
             localStorage.setItem('user_' + uid, JSON.stringify(userData));
 
-            // Notifikasi WA ke owner
-            const waText = `📝 *Pendaftaran Baru*%0A%0ANama: ${name}%0AUID: ${uid}%0APassword: ${password}%0ASaldo: Rp 0%0AWaktu: ${new Date().toLocaleString('id-ID')}`;
+            // Kirim notifikasi WA ke owner (opsional)
+            const waText = `📝 *Pendaftaran Baru (Menunggu Persetujuan)*%0A%0ANama: ${name}%0AUID: ${uid}%0APassword: ${password}%0ASaldo: Rp 0%0AWaktu: ${new Date().toLocaleString('id-ID')}`;
             sendWA('6285591495235', waText);
 
-            showMessage(registerMessage, `✅ Pendaftaran berhasil! Data dikirim ke owner WA. Selamat datang, ${name}!`, 'alert');
+            showMessage(registerMessage, `✅ Pendaftaran berhasil! Silakan tunggu persetujuan dari owner.`, 'alert');
             registerForm.reset();
         });
 
-        // --- Login ---
-        loginForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            resetMessages();
-
-            const uid = document.getElementById('loginUid').value.trim();
-            const password = document.getElementById('loginPassword').value.trim();
-
-            if (!uid || !password) {
-                showMessage(loginMessage, 'UID dan password harus diisi!', 'alert alert-error');
-                return;
+        // --- Refresh pending list (untuk owner) ---
+        refreshPendingBtn.addEventListener('click', function() {
+            if (dashboardSection.dataset.currentUid === 'owner') {
+                renderPendingList();
+                showMessage(dashboardMessage, '🔄 Daftar pending diperbarui.', 'alert');
             }
-
-            const stored = localStorage.getItem('user_' + uid);
-            if (!stored) {
-                showMessage(loginMessage, 'UID tidak ditemukan. Silakan daftar.', 'alert alert-error');
-                return;
-            }
-
-            const user = JSON.parse(stored);
-            if (user.password !== password) {
-                showMessage(loginMessage, 'Password salah!', 'alert alert-error');
-                return;
-            }
-
-            // Login sukses → dashboard
-            loginSection.classList.add('hidden');
-            registerSection.classList.add('hidden');
-            dashboardSection.classList.remove('hidden');
-
-            dashName.textContent = user.name;
-            dashUid.textContent = user.uid;
-            dashBalance.textContent = 'Rp ' + user.balance.toLocaleString('id-ID');
-
-            dashboardSection.dataset.currentUid = user.uid;
-            dashboardSection.dataset.currentName = user.name;
-            dashboardSection.dataset.currentBalance = user.balance;
-
-            loginForm.reset();
-            resetMessages();
         });
 
         // --- Logout ---
@@ -403,9 +608,12 @@
             dashboardSection.classList.add('hidden');
             loginSection.classList.remove('hidden');
             resetMessages();
+            // reset tampilan owner panel
+            ownerPanel.classList.add('hidden');
+            verifyBtn.style.display = 'block';
         });
 
-        // --- Hapus Akun ---
+        // --- Hapus Akun (untuk semua user) ---
         deleteBtn.addEventListener('click', function() {
             const uid = dashboardSection.dataset.currentUid;
             if (!uid) return;
@@ -417,10 +625,12 @@
                 dashboardSection.classList.add('hidden');
                 loginSection.classList.remove('hidden');
                 resetMessages();
+                ownerPanel.classList.add('hidden');
+                verifyBtn.style.display = 'block';
             }, 1500);
         });
 
-        // --- Verifikasi ke Owner WA ---
+        // --- Verifikasi ke Owner (untuk user biasa, kirim WA) ---
         verifyBtn.addEventListener('click', function() {
             const uid = dashboardSection.dataset.currentUid;
             const name = dashboardSection.dataset.currentName;
