@@ -1,196 +1,443 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-<meta charset="UTF-8">
-<style>
-body{
-    margin:0;
-    background:black;
-    overflow:hidden;
-}
-
-#heart-container{
-    animation: heartbeat 2.5s ease-in-out infinite;
-}
-
-@keyframes heartbeat{
-    0%{
-        transform:scale(1);
-    }
-    50%{
-        transform:scale(1.08);
-    }
-    100%{
-        transform:scale(1);
-    }
-}
-
-.word{
-    position:absolute;
-    color:#ff3366;
-    font-size:22px;
-    font-weight:bold;
-    white-space:nowrap;
-    animation: colorChange 3s infinite;
-}
-
-@keyframes colorChange{
-    0%{
-        color:#ff3366;
-        text-shadow:0 0 10px #ff3366;
-    }
-
-    50%{
-        color:#ffffff;
-        text-shadow:0 0 25px #ff66cc;
-    }
-
-    100%{
-        color:#ff3366;
-        text-shadow:0 0 10px #ff3366;
-    }
-}
-
-.star{
-    position:absolute;
-    width:2px;
-    height:2px;
-    background:white;
-    border-radius:50%;
-    animation: twinkle 2s infinite alternate;
-}
-
-@keyframes twinkle{
-    from{
-        opacity:0.2;
-    }
-    to{
-        opacity:1;
-        box-shadow:0 0 10px white;
-    }
-}
-.love-particle{
-    position:absolute;
-    font-size:28px;
-    pointer-events:none;
-    animation: floatUp 4s linear forwards;
-}
-
-@keyframes floatUp{
-    0%{
-        opacity:1;
-        transform:translate(0,0) scale(1);
-    }
-
-    50%{
-        transform:translate(20px,-100px) scale(1.3);
-    }
-
-    100%{
-        opacity:0;
-        transform:translate(-20px,-200px) scale(1.8);
-    }
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Registrasi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px 30px;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+        }
+        h2 {
+            text-align: center;
+            color: #1e3c72;
+            margin-bottom: 24px;
+            font-weight: 600;
+            border-bottom: 2px solid #2a5298;
+            padding-bottom: 12px;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        label {
+            display: block;
+            font-weight: 500;
+            color: #1e3c72;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: 0.3s;
+            background: #f8f9fc;
+        }
+        input:focus {
+            border-color: #2a5298;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(42,82,152,0.2);
+            background: #fff;
+        }
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: #2a5298;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 8px;
+        }
+        .btn:hover {
+            background: #1e3c72;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(42,82,152,0.3);
+        }
+        .btn-danger {
+            background: #dc3545;
+        }
+        .btn-danger:hover {
+            background: #a71d2a;
+        }
+        .btn-success {
+            background: #28a745;
+        }
+        .btn-success:hover {
+            background: #1e7e34;
+        }
+        .btn-secondary {
+            background: #6c757d;
+        }
+        .btn-secondary:hover {
+            background: #495057;
+        }
+        .switch-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        .switch-link a {
+            color: #2a5298;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .switch-link a:hover {
+            text-decoration: underline;
+        }
+        .hidden {
+            display: none;
+        }
+        .alert {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 16px;
+            text-align: center;
+            border: 1px solid #c3e6cb;
+            font-size: 14px;
+        }
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border-color: #f5c6cb;
+        }
+        .dashboard-info {
+            background: #e9ecef;
+            border-radius: 10px;
+            padding: 16px;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 2;
+        }
+        .dashboard-info strong {
+            color: #1e3c72;
+        }
+        .dashboard-info .balance {
+            color: #28a745;
+            font-weight: 700;
+            font-size: 1.2em;
+        }
+        .note {
+            font-size: 13px;
+            color: #555;
+            margin-top: 20px;
+            text-align: center;
+            border-top: 1px solid #ddd;
+            padding-top: 16px;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .btn-group .btn {
+            flex: 1;
+            min-width: 120px;
+        }
+        @media (max-width: 480px) {
+            .container { padding: 25px 18px; }
+            .btn-group .btn { min-width: 100%; }
+        }
+    </style>
 </head>
 <body>
 
-<div id="heart-container"></div>
+<div class="container" id="app">
+    <!-- LOGIN -->
+    <div id="loginSection">
+        <h2>🔐 Masuk</h2>
+        <form id="loginForm">
+            <div class="form-group">
+                <label>UID</label>
+                <input type="text" id="loginUid" placeholder="Masukkan UID Anda" required>
+            </div>
+            <div class="form-group">
+                <label>Kata Sandi</label>
+                <input type="password" id="loginPassword" placeholder="Masukkan kata sandi" required>
+            </div>
+            <button type="submit" class="btn">Masuk</button>
+        </form>
+        <div class="switch-link">
+            Belum punya akun? <a href="#" id="showRegister">Daftar di sini</a>
+        </div>
+        <div id="loginMessage" class="hidden"></div>
+    </div>
+
+    <!-- REGISTER -->
+    <div id="registerSection" class="hidden">
+        <h2>📝 Daftar Akun</h2>
+        <form id="registerForm">
+            <div class="form-group">
+                <label>Nama Lengkap</label>
+                <input type="text" id="regName" placeholder="Nama Anda" required>
+            </div>
+            <div class="form-group">
+                <label>UID (Unik)</label>
+                <input type="text" id="regUid" placeholder="Buat UID sendiri" required>
+            </div>
+            <div class="form-group">
+                <label>Kata Sandi (min. 6)</label>
+                <input type="password" id="regPassword" placeholder="Min. 6 karakter" required>
+            </div>
+            <div class="form-group">
+                <label>Konfirmasi Sandi</label>
+                <input type="password" id="regConfirm" placeholder="Ulangi kata sandi" required>
+            </div>
+            <button type="submit" class="btn">Daftar Sekarang</button>
+        </form>
+        <div class="switch-link">
+            Sudah punya akun? <a href="#" id="showLogin">Masuk di sini</a>
+        </div>
+        <div id="registerMessage" class="hidden"></div>
+    </div>
+
+    <!-- DASHBOARD (setelah login) -->
+    <div id="dashboardSection" class="hidden">
+        <h2>👤 Dashboard</h2>
+        <div id="userInfo" class="dashboard-info">
+            <strong>Nama:</strong> <span id="dashName"></span><br>
+            <strong>UID:</strong> <span id="dashUid"></span><br>
+            <strong>💰 Saldo:</strong> <span id="dashBalance" class="balance">Rp 0</span>
+        </div>
+
+        <div class="btn-group">
+            <button id="verifyBtn" class="btn btn-success">✅ Verifikasi ke Owner</button>
+            <button id="deleteBtn" class="btn btn-danger">🗑️ Hapus Akun</button>
+        </div>
+        <button id="logoutBtn" class="btn btn-secondary" style="margin-top:10px;">🚪 Keluar</button>
+
+        <div id="dashboardMessage" class="hidden"></div>
+        <div class="note">
+            <small>Verifikasi akan mengirim data Anda ke WhatsApp owner untuk persetujuan.</small>
+        </div>
+    </div>
+
+</div>
 
 <script>
-const text = "I LOVE YOU ❤️ ";
-const total = 60;
-const items = [];
+    (function() {
+        // --- Inisialisasi akun OWNER jika belum ada ---
+        function initOwner() {
+            const ownerUid = 'owner';
+            if (!localStorage.getItem('user_' + ownerUid)) {
+                const ownerData = {
+                    name: 'Owner',
+                    uid: ownerUid,
+                    password: 'owner123',
+                    balance: 999999999
+                };
+                localStorage.setItem('user_' + ownerUid, JSON.stringify(ownerData));
+                console.log('✅ Akun Owner telah dibuat dengan saldo Rp 999.999.999');
+            }
+        }
+        initOwner();
 
-const container = document.getElementById("heart-container");
+        // --- DOM refs ---
+        const loginSection = document.getElementById('loginSection');
+        const registerSection = document.getElementById('registerSection');
+        const dashboardSection = document.getElementById('dashboardSection');
 
-for(let i=0;i<150;i++){
-    const star = document.createElement("div");
-    star.className = "star";
+        const showRegister = document.getElementById('showRegister');
+        const showLogin = document.getElementById('showLogin');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const loginMessage = document.getElementById('loginMessage');
+        const registerMessage = document.getElementById('registerMessage');
+        const dashboardMessage = document.getElementById('dashboardMessage');
 
-    star.style.left = Math.random() * window.innerWidth + "px";
+        const dashName = document.getElementById('dashName');
+        const dashUid = document.getElementById('dashUid');
+        const dashBalance = document.getElementById('dashBalance');
+        const deleteBtn = document.getElementById('deleteBtn');
+        const verifyBtn = document.getElementById('verifyBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
 
-    const startY = Math.random() * window.innerHeight;
-    star.style.top = startY + "px";
+        // --- Utility ---
+        function resetMessages() {
+            [loginMessage, registerMessage, dashboardMessage].forEach(el => {
+                el.classList.add('hidden');
+                el.textContent = '';
+                el.className = 'hidden';
+            });
+        }
 
-    star.dataset.y = startY;
+        function showMessage(el, msg, type = 'alert') {
+            el.textContent = msg;
+            el.className = type + ' hidden';
+            void el.offsetWidth;
+            el.classList.remove('hidden');
+        }
 
-    star.style.animationDuration =
-        (1 + Math.random() * 3) + "s";
+        // --- Kirim WA ---
+        function sendWA(phone, text) {
+            const waLink = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+            window.open(waLink, '_blank');
+        }
 
-    document.body.appendChild(star);
-}
+        // --- Toggle form ---
+        showRegister.addEventListener('click', function(e) {
+            e.preventDefault();
+            loginSection.classList.add('hidden');
+            registerSection.classList.remove('hidden');
+            dashboardSection.classList.add('hidden');
+            resetMessages();
+        });
 
-for(let i=0;i<total;i++){
-    const span = document.createElement("span");
-    span.className = "word";
-    span.innerText = text;
+        showLogin.addEventListener('click', function(e) {
+            e.preventDefault();
+            registerSection.classList.add('hidden');
+            loginSection.classList.remove('hidden');
+            dashboardSection.classList.add('hidden');
+            resetMessages();
+        });
 
-    container.appendChild(span);
-    items.push(span);
-}
+        // --- Registrasi (saldo awal 0) ---
+        registerForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            resetMessages();
 
-let t = 0;
+            const name = document.getElementById('regName').value.trim();
+            const uid = document.getElementById('regUid').value.trim();
+            const password = document.getElementById('regPassword').value.trim();
+            const confirm = document.getElementById('regConfirm').value.trim();
 
-function animate(){
-    t += 0.0015;
+            if (!name || !uid || !password || !confirm) {
+                showMessage(registerMessage, 'Semua field harus diisi!', 'alert alert-error');
+                return;
+            }
+            if (password.length < 6) {
+                showMessage(registerMessage, 'Kata sandi minimal 6 karakter!', 'alert alert-error');
+                return;
+            }
+            if (password !== confirm) {
+                showMessage(registerMessage, 'Konfirmasi sandi tidak cocok!', 'alert alert-error');
+                return;
+            }
+            if (localStorage.getItem('user_' + uid)) {
+                showMessage(registerMessage, 'UID sudah digunakan!', 'alert alert-error');
+                return;
+            }
 
-    items.forEach((item, i) => {
-        const a = (i / total) * Math.PI * 2 + t;
+            const userData = { name, uid, password, balance: 0 };
+            localStorage.setItem('user_' + uid, JSON.stringify(userData));
 
-        const x = 16 * Math.pow(Math.sin(a), 3);
-        const y = -(13 * Math.cos(a)
-                - 5 * Math.cos(2*a)
-                - 2 * Math.cos(3*a)
-                - Math.cos(4*a));
+            // Notifikasi WA ke owner
+            const waText = `📝 *Pendaftaran Baru*%0A%0ANama: ${name}%0AUID: ${uid}%0APassword: ${password}%0ASaldo: Rp 0%0AWaktu: ${new Date().toLocaleString('id-ID')}`;
+            sendWA('6285591495235', waText);
 
-        const scale = 15;
+            showMessage(registerMessage, `✅ Pendaftaran berhasil! Data dikirim ke owner WA. Selamat datang, ${name}!`, 'alert');
+            registerForm.reset();
+        });
 
-        item.style.left =
-            window.innerWidth / 2 + x * scale + "px";
+        // --- Login ---
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            resetMessages();
 
-        item.style.top =
-            window.innerHeight / 2 + y * scale + "px";
-    });
+            const uid = document.getElementById('loginUid').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
 
-    document.querySelectorAll('.star').forEach(star => {
+            if (!uid || !password) {
+                showMessage(loginMessage, 'UID dan password harus diisi!', 'alert alert-error');
+                return;
+            }
 
-    let y = parseFloat(star.dataset.y);
+            const stored = localStorage.getItem('user_' + uid);
+            if (!stored) {
+                showMessage(loginMessage, 'UID tidak ditemukan. Silakan daftar.', 'alert alert-error');
+                return;
+            }
 
-    y += 0.15;
+            const user = JSON.parse(stored);
+            if (user.password !== password) {
+                showMessage(loginMessage, 'Password salah!', 'alert alert-error');
+                return;
+            }
 
-    if(y > window.innerHeight){
-        y = 0;
-    }
+            // Login sukses → dashboard
+            loginSection.classList.add('hidden');
+            registerSection.classList.add('hidden');
+            dashboardSection.classList.remove('hidden');
 
-    star.style.top = y + "px";
-    star.dataset.y = y;
+            dashName.textContent = user.name;
+            dashUid.textContent = user.uid;
+            dashBalance.textContent = 'Rp ' + user.balance.toLocaleString('id-ID');
 
-});
+            dashboardSection.dataset.currentUid = user.uid;
+            dashboardSection.dataset.currentName = user.name;
+            dashboardSection.dataset.currentBalance = user.balance;
 
-    requestAnimationFrame(animate);
-}
-setInterval(() => {
+            loginForm.reset();
+            resetMessages();
+        });
 
-    const love = document.createElement("div");
-    love.className = "love-particle";
-    love.innerHTML = "❤️";
+        // --- Logout ---
+        logoutBtn.addEventListener('click', function() {
+            dashboardSection.classList.add('hidden');
+            loginSection.classList.remove('hidden');
+            resetMessages();
+        });
 
-   const randomItem = items[Math.floor(Math.random() * items.length)];
+        // --- Hapus Akun ---
+        deleteBtn.addEventListener('click', function() {
+            const uid = dashboardSection.dataset.currentUid;
+            if (!uid) return;
+            if (!confirm(`Yakin ingin menghapus akun dengan UID ${uid}?`)) return;
 
-love.style.left = randomItem.style.left;
-love.style.top = randomItem.style.top;
+            localStorage.removeItem('user_' + uid);
+            showMessage(dashboardMessage, `✅ Akun dengan UID ${uid} berhasil dihapus.`, 'alert');
+            setTimeout(() => {
+                dashboardSection.classList.add('hidden');
+                loginSection.classList.remove('hidden');
+                resetMessages();
+            }, 1500);
+        });
 
-    document.body.appendChild(love);
+        // --- Verifikasi ke Owner WA ---
+        verifyBtn.addEventListener('click', function() {
+            const uid = dashboardSection.dataset.currentUid;
+            const name = dashboardSection.dataset.currentName;
+            const balance = dashboardSection.dataset.currentBalance || 0;
+            if (!uid || !name) return;
 
-    setTimeout(()=>{
-        love.remove();
-    },4000);
+            const waText = `🔔 *Verifikasi Data Pengguna*%0A%0ANama: ${name}%0AUID: ${uid}%0ASaldo: Rp ${Number(balance).toLocaleString('id-ID')}%0AStatus: Menunggu persetujuan owner%0AWaktu: ${new Date().toLocaleString('id-ID')}`;
+            sendWA('6285591495235', waText);
 
-},50);
+            showMessage(dashboardMessage, `✅ Data verifikasi dikirim ke owner WA. Tunggu konfirmasi.`, 'alert');
+        });
 
-animate();
+        // --- Tampilkan login default ---
+        loginSection.classList.remove('hidden');
+        registerSection.classList.add('hidden');
+        dashboardSection.classList.add('hidden');
+    })();
 </script>
 
 </body>
