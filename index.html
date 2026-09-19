@@ -1,654 +1,448 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login & Registrasi + Persetujuan Owner</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        .container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 40px 30px;
-            max-width: 550px;
-            width: 100%;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-            transition: all 0.3s ease;
-        }
-        h2 {
-            text-align: center;
-            color: #1e3c72;
-            margin-bottom: 24px;
-            font-weight: 600;
-            border-bottom: 2px solid #2a5298;
-            padding-bottom: 12px;
-        }
-        .form-group {
-            margin-bottom: 18px;
-        }
-        label {
-            display: block;
-            font-weight: 500;
-            color: #1e3c72;
-            margin-bottom: 6px;
-            font-size: 14px;
-        }
-        input {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 15px;
-            transition: 0.3s;
-            background: #f8f9fc;
-        }
-        input:focus {
-            border-color: #2a5298;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(42,82,152,0.2);
-            background: #fff;
-        }
-        .btn {
-            width: 100%;
-            padding: 14px;
-            background: #2a5298;
-            border: none;
-            border-radius: 8px;
-            color: white;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
-            margin-top: 8px;
-        }
-        .btn:hover {
-            background: #1e3c72;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(42,82,152,0.3);
-        }
-        .btn-danger {
-            background: #dc3545;
-        }
-        .btn-danger:hover {
-            background: #a71d2a;
-        }
-        .btn-success {
-            background: #28a745;
-        }
-        .btn-success:hover {
-            background: #1e7e34;
-        }
-        .btn-secondary {
-            background: #6c757d;
-        }
-        .btn-secondary:hover {
-            background: #495057;
-        }
-        .btn-owner {
-            background: #fd7e14;
-            color: #fff;
-        }
-        .btn-owner:hover {
-            background: #e06b0a;
-        }
-        .btn-sm {
-            padding: 8px 14px;
-            font-size: 13px;
-            width: auto;
-            margin: 0 4px;
-        }
-        .switch-link {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 14px;
-        }
-        .switch-link a {
-            color: #2a5298;
-            text-decoration: none;
-            font-weight: 600;
-        }
-        .switch-link a:hover {
-            text-decoration: underline;
-        }
-        .hidden {
-            display: none;
-        }
-        .alert {
-            background: #d4edda;
-            color: #155724;
-            padding: 12px;
-            border-radius: 8px;
-            margin-top: 16px;
-            text-align: center;
-            border: 1px solid #c3e6cb;
-            font-size: 14px;
-        }
-        .alert-error {
-            background: #f8d7da;
-            color: #721c24;
-            border-color: #f5c6cb;
-        }
-        .alert-warning {
-            background: #fff3cd;
-            color: #856404;
-            border-color: #ffeeba;
-        }
-        .dashboard-info {
-            background: #e9ecef;
-            border-radius: 10px;
-            padding: 16px;
-            margin: 15px 0;
-            font-size: 15px;
-            line-height: 2;
-        }
-        .dashboard-info strong {
-            color: #1e3c72;
-        }
-        .dashboard-info .balance {
-            color: #28a745;
-            font-weight: 700;
-            font-size: 1.2em;
-        }
-        .pending-list {
-            margin: 15px 0;
-            max-height: 250px;
-            overflow-y: auto;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 8px;
-        }
-        .pending-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 10px;
-            border-bottom: 1px solid #f0f0f0;
-        }
-        .pending-item:last-child {
-            border-bottom: none;
-        }
-        .pending-item .info {
-            font-size: 14px;
-        }
-        .pending-item .info strong {
-            color: #1e3c72;
-        }
-        .note {
-            font-size: 13px;
-            color: #555;
-            margin-top: 20px;
-            text-align: center;
-            border-top: 1px solid #ddd;
-            padding-top: 16px;
-        }
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .btn-group .btn {
-            flex: 1;
-            min-width: 120px;
-        }
-        .divider {
-            margin: 12px 0;
-            text-align: center;
-            color: #888;
-            font-size: 13px;
-            position: relative;
-        }
-        .divider::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            width: 100%;
-            height: 1px;
-            background: #ddd;
-        }
-        .divider span {
-            background: #fff;
-            padding: 0 12px;
-            position: relative;
-            z-index: 1;
-        }
-        @media (max-width: 480px) {
-            .container { padding: 25px 18px; }
-            .btn-group .btn { min-width: 100%; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASTER STORE • PREMIUM ACCOUNT</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Inter',system-ui,sans-serif; }
+  body {
+    background: radial-gradient(circle at top, #131a2b, #070a12 70%);
+    color:#eef2ff; padding:1.5rem; min-height:100vh;
+  }
+  .store-header {
+    display:flex; flex-wrap:wrap; justify-content:space-between;
+    align-items:center; margin-bottom:1.5rem; padding-bottom:1rem;
+    border-bottom:1px solid #1f2a3d;
+  }
+  .brand { display:flex; align-items:center; gap:0.9rem; }
+  .brand-icon {
+    width:52px; height:52px; border-radius:16px;
+    background:linear-gradient(135deg,#6d8cff,#a855f7);
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800; font-size:1.7rem; color:#0b0f1a;
+    box-shadow:0 8px 24px rgba(109,140,255,0.35);
+  }
+  .brand-text h1 {
+    font-size:1.7rem; font-weight:800; letter-spacing:-0.5px;
+    background:linear-gradient(to right,#fff,#c7d2fe);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  }
+  .brand-text span { font-size:0.78rem; color:#7c8db3; letter-spacing:1px; }
+
+  .signal-badge {
+    background:#141c2c; border:1px solid #263248;
+    padding:0.6rem 1.1rem; border-radius:100px; font-size:0.85rem;
+    display:flex; align-items:center; gap:0.5rem; color:#b9c7e0;
+  }
+  .signal-dot {
+    width:8px; height:8px; background:#22c55e; border-radius:50%;
+    box-shadow:0 0 8px #22c55e; animation:pulse 1.8s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+
+  .stats { display:flex; flex-wrap:wrap; gap:0.8rem; margin-bottom:1.2rem; }
+  .stat-card {
+    flex:1; min-width:120px; background:#101827;
+    border:1px solid #1f2a3d; border-radius:16px;
+    padding:0.9rem 1rem; text-align:center;
+  }
+  .stat-card h3 { font-size:1.5rem; font-weight:800; color:#8ea9ff; }
+  .stat-card p { font-size:0.7rem; color:#7c8db3; letter-spacing:0.5px; margin-top:0.2rem; }
+
+  .filter-bar { display:flex; flex-wrap:wrap; gap:0.6rem; margin-bottom:1.2rem; }
+  .filter-btn {
+    background:#141c2c; border:1px solid #263248; color:#b9c7e0;
+    padding:0.5rem 1.1rem; border-radius:100px; font-size:0.8rem;
+    cursor:pointer; transition:.2s; font-weight:600;
+  }
+  .filter-btn:hover { background:#1c2740; color:#fff; }
+  .filter-btn.active { background:#6d8cff; color:#0b0f1a; border-color:#6d8cff; }
+
+  .grid {
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:1rem;
+  }
+  .card {
+    background:#101827; border:1px solid #1f2a3d; border-radius:18px;
+    padding:1.1rem; cursor:pointer; transition:.2s;
+    display:flex; flex-direction:column; gap:0.6rem;
+    position:relative; overflow:hidden;
+  }
+  .card::before {
+    content:''; position:absolute; top:0; left:0; width:100%; height:3px;
+    background:linear-gradient(90deg,#6d8cff,#a855f7);
+  }
+  .card:hover {
+    transform:translateY(-4px); background:#162034;
+    border-color:#3b4e6b; box-shadow:0 18px 30px -12px #000;
+  }
+  .card-header { display:flex; justify-content:space-between; align-items:center; gap:0.4rem; }
+  .item-code {
+    font-family:'JetBrains Mono',monospace; font-size:0.68rem;
+    background:#1a2438; padding:0.25rem 0.6rem; border-radius:100px;
+    color:#8ea9ff; border:1px solid #2a3a55; white-space:nowrap;
+  }
+  .badge {
+    font-size:0.65rem; font-weight:700; padding:0.25rem 0.65rem;
+    border-radius:100px; letter-spacing:0.3px; white-space:nowrap;
+  }
+  .badge.rare { background:#7c3aed; color:#f0e9ff; box-shadow:0 0 10px #8b5cf6aa; }
+  .badge.jelek { background:#422006; color:#fbbf24; border:1px solid #b45309; }
+  .badge.najis { background:#0f2e20; color:#4ade80; border:1px solid #14532d; }
+
+  .item-name {
+    font-family:'JetBrains Mono',monospace; font-size:1rem;
+    font-weight:700; color:#f0f4ff; word-break:break-all;
+  }
+  .item-meta { display:flex; flex-wrap:wrap; gap:0.5rem; font-size:0.78rem; color:#a0b3d9; }
+  .dimension {
+    background:#1e293b; padding:0.15rem 0.55rem; border-radius:8px;
+    font-weight:600; color:#cbd5e1; font-size:0.72rem;
+  }
+  .password-hint {
+    font-size:0.63rem; color:#5b6e8c; border-top:1px dashed #253040;
+    padding-top:0.55rem; display:flex; justify-content:space-between; align-items:center;
+    gap:0.4rem;
+  }
+  .password-hint strong { color:#d9e2f0; font-family:monospace; word-break:break-all; }
+
+  .modal-overlay {
+    position:fixed; inset:0; background:rgba(0,0,0,0.82);
+    backdrop-filter:blur(6px); display:none; align-items:center;
+    justify-content:center; padding:1.5rem; z-index:1000;
+  }
+  .modal-overlay.active { display:flex; }
+  .modal-card {
+    background:#101827; border:1px solid #2c3b52; border-radius:26px;
+    max-width:440px; width:100%; padding:2rem 1.8rem;
+    box-shadow:0 30px 60px -15px #000; position:relative;
+    animation:fade .2s ease;
+  }
+  @keyframes fade { from{opacity:0; transform:scale(.95)} to{opacity:1; transform:scale(1)} }
+  .modal-close {
+    position:absolute; top:1rem; right:1.2rem; background:none; border:none;
+    color:#6b7c9e; font-size:1.8rem; cursor:pointer; line-height:1;
+  }
+  .modal-close:hover { color:#fff; }
+  .modal-title {
+    font-size:1.3rem; font-weight:800; font-family:'JetBrains Mono',monospace;
+    margin-bottom:1.3rem; color:#fff; word-break:break-all;
+    border-left:5px solid #6d8cff; padding-left:1rem;
+  }
+  .detail-row {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:0.8rem 0; border-bottom:1px solid #1e2a3a; font-size:0.88rem;
+    gap:0.8rem;
+  }
+  .detail-label { color:#8496b5; font-weight:500; white-space:nowrap; }
+  .detail-value {
+    font-family:'JetBrains Mono',monospace; font-weight:600; color:#dbe7ff;
+    background:#1a2438; padding:0.25rem 0.75rem; border-radius:40px;
+    font-size:0.82rem; border:1px solid #2f405a; word-break:break-all;
+    text-align:right;
+  }
+  .modal-category-badge {
+    display:inline-block; margin-top:1.2rem; padding:0.5rem 1.2rem;
+    border-radius:40px; font-weight:700; font-size:0.85rem;
+  }
+  .modal-password {
+    margin-top:1rem; background:#1a2438; border:1px dashed #2f405a;
+    border-radius:14px; padding:0.9rem 1rem; text-align:center;
+  }
+  .modal-password .lbl { font-size:0.7rem; color:#7c8db3; letter-spacing:1px; }
+  .modal-password .val {
+    font-family:'JetBrains Mono',monospace; font-size:1.05rem;
+    font-weight:700; color:#8ea9ff; margin-top:0.3rem; word-break:break-all;
+  }
+
+  @media (max-width:480px) {
+    body { padding:1rem; }
+    .brand-text h1 { font-size:1.3rem; }
+    .grid { grid-template-columns:1fr; }
+    .modal-card { padding:1.5rem; }
+  }
+</style>
 </head>
 <body>
 
-<div class="container" id="app">
-    <!-- LOGIN -->
-    <div id="loginSection">
-        <h2>🔐 Masuk</h2>
-        <form id="loginForm">
-            <div class="form-group">
-                <label>UID</label>
-                <input type="text" id="loginUid" placeholder="Masukkan UID Anda" required>
-            </div>
-            <div class="form-group">
-                <label>Kata Sandi</label>
-                <input type="password" id="loginPassword" placeholder="Masukkan kata sandi" required>
-            </div>
-            <button type="submit" class="btn">Masuk</button>
-        </form>
-
-        <div class="divider"><span>atau</span></div>
-        <button id="ownerLoginBtn" class="btn btn-owner">👑 Login sebagai Owner</button>
-
-        <div class="switch-link">
-            Belum punya akun? <a href="#" id="showRegister">Daftar di sini</a>
-        </div>
-        <div id="loginMessage" class="hidden"></div>
+<header class="store-header">
+  <div class="brand">
+    <div class="brand-icon">A</div>
+    <div class="brand-text">
+      <h1>ASTER STORE</h1>
+      <span>PREMIUM ACCOUNT • ASTER SAESTU</span>
     </div>
+  </div>
+  <div class="signal-badge">
+    <span class="signal-dot"></span>
+    <span>Sinyal 16ms • Online</span>
+  </div>
+</header>
 
-    <!-- REGISTER -->
-    <div id="registerSection" class="hidden">
-        <h2>📝 Daftar Akun</h2>
-        <form id="registerForm">
-            <div class="form-group">
-                <label>Nama Lengkap</label>
-                <input type="text" id="regName" placeholder="Nama Anda" required>
-            </div>
-            <div class="form-group">
-                <label>UID (Unik)</label>
-                <input type="text" id="regUid" placeholder="Buat UID sendiri" required>
-            </div>
-            <div class="form-group">
-                <label>Kata Sandi (min. 6)</label>
-                <input type="password" id="regPassword" placeholder="Min. 6 karakter" required>
-            </div>
-            <div class="form-group">
-                <label>Konfirmasi Sandi</label>
-                <input type="password" id="regConfirm" placeholder="Ulangi kata sandi" required>
-            </div>
-            <button type="submit" class="btn">Daftar Sekarang</button>
-        </form>
-        <div class="switch-link">
-            Sudah punya akun? <a href="#" id="showLogin">Masuk di sini</a>
-        </div>
-        <div id="registerMessage" class="hidden"></div>
-    </div>
+<div class="stats">
+  <div class="stat-card"><h3 id="totalItems">0</h3><p>TOTAL ITEM</p></div>
+  <div class="stat-card"><h3 id="totalRare">0</h3><p>RARE</p></div>
+  <div class="stat-card"><h3 id="totalJelek">0</h3><p>JELEKBET</p></div>
+  <div class="stat-card"><h3 id="totalNajis">0</h3><p>NAJISNYO</p></div>
+</div>
 
-    <!-- DASHBOARD (USER BIASA & OWNER) -->
-    <div id="dashboardSection" class="hidden">
-        <h2 id="dashboardTitle">👤 Dashboard</h2>
-        <div id="userInfo" class="dashboard-info">
-            <strong>Nama:</strong> <span id="dashName"></span><br>
-            <strong>UID:</strong> <span id="dashUid"></span><br>
-            <strong>💰 Saldo:</strong> <span id="dashBalance" class="balance">Rp 0</span>
-        </div>
+<div class="filter-bar">
+  <button class="filter-btn active" data-filter="ALL">SEMUA</button>
+  <button class="filter-btn" data-filter="RARE">RARE</button>
+  <button class="filter-btn" data-filter="JELEKBET">JELEKBET</button>
+  <button class="filter-btn" data-filter="NAJISNYO">NAJISNYO</button>
+</div>
 
-        <!-- Area khusus Owner: daftar pending -->
-        <div id="ownerPanel" class="hidden">
-            <h3 style="color:#1e3c72; margin:10px 0;">📋 Daftar Pengguna Menunggu Persetujuan</h3>
-            <div id="pendingList" class="pending-list">
-                <p style="color:#888; text-align:center; padding:10px;">Tidak ada pengguna menunggu</p>
-            </div>
-            <button id="refreshPendingBtn" class="btn btn-secondary btn-sm" style="margin-top:5px;">🔄 Refresh</button>
-        </div>
+<div class="grid" id="productGrid"></div>
 
-        <div class="btn-group">
-            <button id="verifyBtn" class="btn btn-success">✅ Verifikasi ke Owner</button>
-            <button id="deleteBtn" class="btn btn-danger">🗑️ Hapus Akun</button>
-        </div>
-        <button id="logoutBtn" class="btn btn-secondary" style="margin-top:10px;">🚪 Keluar</button>
-
-        <div id="dashboardMessage" class="hidden"></div>
-        <div class="note">
-            <small>Verifikasi akan mengirim data Anda ke WhatsApp owner untuk persetujuan (opsional).</small>
-        </div>
-    </div>
-
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-card">
+    <button class="modal-close" id="modalCloseBtn">&times;</button>
+    <div class="modal-title" id="modalTitle">—</div>
+    <div id="modalDetails"></div>
+    <div id="modalBadgeContainer"></div>
+  </div>
 </div>
 
 <script>
-    (function() {
-        // --- INISIALISASI AKUN OWNER ---
-        function initOwner() {
-            const ownerUid = 'owner';
-            if (!localStorage.getItem('user_' + ownerUid)) {
-                const ownerData = {
-                    name: 'Owner',
-                    uid: ownerUid,
-                    password: 'owner123',
-                    balance: 999999999,
-                    approved: true  // owner otomatis approved
-                };
-                localStorage.setItem('user_' + ownerUid, JSON.stringify(ownerData));
-                console.log('✅ Akun Owner dibuat');
-            }
-        }
-        initOwner();
+/* ============ DATA 100 STOK ============ */
+const rawData = `[001-99999999] XORABGUM8P | ID:18238453412 | UID:7873240048 | 8×2 | NAJISNYO
+[002-99999999] XORANA1FCG | ID:18238453481 | UID:7873240072 | 8×3 | JELEKBET
+[003-99999999] XORACI1Q6S | ID:18238453490 | UID:7873240074 | 8×2 | NAJISNYO
+[004-99999999] XORAJ5NTJ4 | ID:18238453501 | UID:7873240080 | 8×2 | NAJISNYO
+[005-99999999] XORAU37UZ1 | ID:18238453513 | UID:7873240084 | 3×3 | JELEKBET
+[006-99999999] XORAEK20C6 | ID:18238453563 | UID:7873240107 | 3×3 | JELEKBET
+[007-99999999] XORAB8Z89F | ID:18238453696 | UID:7873240133 | 8×2 | NAJISNYO
+[008-99999999] XORAF83M3Q | ID:18238453634 | UID:7873240123 | 3×3 | JELEKBET
+[009-99999999] XORAJI5H04 | ID:18238453692 | UID:7873240132 | 8×2 | NAJISNYO
+[010-99999999] XORAI9BJ7Z | ID:18238453717 | UID:7873240135 | 8×2 | NAJISNYO
+[011-99999999] XORAT140W3 | ID:18238453803 | UID:7873240366 | 8×3 | JELEKBET
+[012-99999999] XORAI5UWLR | ID:18238453829 | UID:7873240412 | 8×3 | JELEKBET
+[013-99999999] XORA93P7IX | ID:18238453861 | UID:7873240494 | 8×3 | JELEKBET
+[014-99999999] XORA3T9DEM | ID:18238453950 | UID:7873240717 | 8×2 | NAJISNYO
+[015-99999999] XORAG72312 | ID:18238454059 | UID:7873240878 | 8×2 | NAJISNYO
+[016-99999999] XORA7RN6ZQ | ID:18238454218 | UID:7873241206 | 8×3 | JELEKBET
+[017-99999999] XORAFF6I8E | ID:18238454408 | UID:7873241463 | 8×3 | JELEKBET
+[018-99999999] XORAOOP4CS | ID:18238454428 | UID:7873241505 | 8×3 | JELEKBET
+[019-99999999] XORAYH7H55 | ID:18238454523 | UID:7873241626 | 8×2 | NAJISNYO
+[020-99999999] XORAH1WN0T | ID:18238454559 | UID:7873241656 | 5×3 | JELEKBET
+[021-99999999] XORAVX2UO8 | ID:18238454630 | UID:7873241701 | 8×2 | NAJISNYO
+[022-99999999] XORA4VOOVA | ID:18238454766 | UID:7873241810 | 8×2 | NAJISNYO
+[023-99999999] XORAG27XR9 | ID:18238454763 | UID:7873241808 | 8×2 | NAJISNYO
+[024-99999999] XORAXB6VPA | ID:18238454857 | UID:7873241878 | 8×3 | JELEKBET
+[025-99999999] XORAX0ABSW | ID:18238454898 | UID:7873241894 | 8×4 | RARE
+[026-99999999] XORAS7RU6P | ID:18238454913 | UID:7873241905 | 8×2 | NAJISNYO
+[027-99999999] XORAG3I6D1 | ID:18238454945 | UID:7873241920 | 4×3 | JELEKBET
+[028-99999999] XORABS87PG | ID:18238454970 | UID:7873241940 | 8×2 | NAJISNYO
+[029-99999999] XORAQI6KDX | ID:18238455018 | UID:7873241973 | 8×3 | JELEKBET
+[030-99999999] XORARDCCGK | ID:18238455076 | UID:7873242016 | 8×2 | NAJISNYO
+[031-99999999] XORAI26ZBI | ID:18238455153 | UID:7873242052 | 5×3 | JELEKBET
+[032-99999999] XORA71YZ1S | ID:18238455194 | UID:7873242069 | 8×2 | NAJISNYO
+[033-99999999] XORAK7XSHY | ID:18238455231 | UID:7873242090 | 8×2 | NAJISNYO
+[034-99999999] XORAA3LNFD | ID:18238455280 | UID:7873242120 | 8×3 | JELEKBET
+[035-99999999] XORAX1C6J3 | ID:18238455311 | UID:7873242141 | 8×2 | NAJISNYO
+[036-99999999] XORAP9JBGJ | ID:18238455319 | UID:7873242144 | 8×2 | NAJISNYO
+[037-99999999] XORAM6KQFA | ID:18238455344 | UID:7873242152 | 4×3 | JELEKBET
+[038-99999999] XORA6LOYYH | ID:18238455366 | UID:7873242166 | 8×2 | NAJISNYO
+[039-99999999] XORANUWOR1 | ID:18238455399 | UID:7873242187 | 8×2 | NAJISNYO
+[040-99999999] XORAVTKPDW | ID:18238455394 | UID:7873242183 | 8×2 | NAJISNYO
+[041-99999999] XORA3S2JBM | ID:18238455438 | UID:7873242208 | 8×3 | JELEKBET
+[042-99999999] XORAUQ31TD | ID:18238455489 | UID:7873242244 | 8×3 | JELEKBET
+[043-99999999] XORA3SJBJN | ID:18238455494 | UID:7873242243 | 4×3 | JELEKBET
+[044-99999999] XORAKQTIW2 | ID:18238455525 | UID:7873242260 | 5×4 | RARE
+[045-99999999] XORA8L7OIX | ID:18238455572 | UID:7873242310 | 5×3 | JELEKBET
+[046-99999999] XORA9LVPYF | ID:18238455591 | UID:7873242319 | 5×3 | JELEKBET
+[047-99999999] XORACZBC7A | ID:18238455603 | UID:7873242329 | 8×2 | NAJISNYO
+[048-99999999] XORAAVOQC3 | ID:18238455606 | UID:7873242330 | 8×2 | NAJISNYO
+[049-99999999] XORA0KQN5C | ID:18238455630 | UID:7873242346 | 8×2 | NAJISNYO
+[050-99999999] XORA4CQR0C | ID:18238455643 | UID:7873242361 | 8×2 | NAJISNYO
+[051-99999999] XORAZ4G1GW | ID:18238455656 | UID:7873242374 | 5×3 | JELEKBET
+[052-99999999] XORABRZPWH | ID:18238455684 | UID:7873242386 | 8×3 | JELEKBET
+[053-99999999] XORA06THMY | ID:18238455693 | UID:7873242397 | 8×2 | NAJISNYO
+[054-99999999] XORARJWETY | ID:18238455713 | UID:7873242414 | 8×2 | NAJISNYO
+[055-99999999] XORAD6YYC3 | ID:18238455741 | UID:7873242437 | 8×2 | NAJISNYO
+[056-99999999] XORAZIZ4AI | ID:18238455762 | UID:7873242453 | 8×2 | NAJISNYO
+[057-99999999] XORAM4MUZC | ID:18238455769 | UID:7873242460 | 8×2 | NAJISNYO
+[058-99999999] XORA6E6O83 | ID:18238455773 | UID:7873242459 | 8×2 | NAJISNYO
+[059-99999999] XORA6D53MO | ID:18238455793 | UID:7873242472 | 8×2 | NAJISNYO
+[060-99999999] XORAV23RO8 | ID:18238455820 | UID:7873242488 | 8×3 | JELEKBET
+[061-99999999] XORAR4NUQK | ID:18238455870 | UID:7873242512 | 8×3 | JELEKBET
+[062-99999999] XORA2ATO6Y | ID:18238455885 | UID:7873242526 | 8×4 | RARE
+[063-99999999] XORACBMJ0W | ID:18238455882 | UID:7873242523 | 8×4 | RARE
+[064-99999999] XORAIBCH3V | ID:18238455905 | UID:7873242535 | 5×3 | JELEKBET
+[065-99999999] XORAYE6FE5 | ID:18238455890 | UID:7873242527 | 8×3 | JELEKBET
+[066-99999999] XORA53OCUQ | ID:18238455973 | UID:7873242590 | 8×2 | NAJISNYO
+[067-99999999] XORANO7M6P | ID:18238455977 | UID:7873242586 | 8×2 | NAJISNYO
+[068-99999999] XORAQ6GZTQ | ID:18238456038 | UID:7873242634 | 8×3 | JELEKBET
+[069-99999999] XORAVQ8KPM | ID:18238456001 | UID:7873242602 | 8×2 | NAJISNYO
+[070-99999999] XORAZIKTNX | ID:18238456005 | UID:7873242594 | 8×2 | NAJISNYO
+[071-99999999] XORAPQ8286 | ID:18238455959 | UID:7873242577 | 5×3 | JELEKBET
+[072-99999999] XORANAC0QB | ID:18238455988 | UID:7873242592 | 8×4 | RARE
+[073-99999999] XORA2EUW0N | ID:18238456026 | UID:7873242621 | 8×2 | NAJISNYO
+[074-99999999] XORA53NM0V | ID:18238456025 | UID:7873242616 | 8×2 | NAJISNYO
+[075-99999999] XORA631GRC | ID:18238455999 | UID:7873242608 | 9×3 | JELEKBET
+[076-99999999] XORAFIVV9V | ID:18238455964 | UID:7873242576 | 8×2 | NAJISNYO
+[077-99999999] XORAGATNQJ | ID:18238455971 | UID:7873242565 | 8×2 | NAJISNYO
+[078-99999999] XORA77RW55 | ID:18238456015 | UID:7873242611 | 8×2 | NAJISNYO
+[079-99999999] XORAM07L5G | ID:18238456062 | UID:7873242651 | 8×2 | NAJISNYO
+[080-99999999] XORAHWAEHD | ID:18238456003 | UID:7873242597 | 8×2 | NAJISNYO
+[081-99999999] XORA5C5HD5 | ID:18238456009 | UID:7873242610 | 8×2 | NAJISNYO
+[082-99999999] XORA2S399Z | ID:18238455929 | UID:7873242548 | 8×2 | NAJISNYO
+[083-99999999] XORA3Q4LN5 | ID:18238455974 | UID:7873242575 | 8×2 | NAJISNYO
+[084-99999999] XORA8LENAO | ID:18238455979 | UID:7873242585 | 8×2 | NAJISNYO
+[085-99999999] XORADOQJO4 | ID:18238456008 | UID:7873242604 | 8×3 | JELEKBET
+[086-99999999] XORASKUGOY | ID:18238455967 | UID:7873242582 | 8×2 | NAJISNYO
+[087-99999999] XORASWY9CT | ID:18238455966 | UID:7873242579 | 8×2 | NAJISNYO
+[088-99999999] XORAM9BTSP | ID:18238455969 | UID:7873242567 | 8×2 | NAJISNYO
+[089-99999999] XORAFM3N29 | ID:18238456012 | UID:7873242613 | 8×2 | NAJISNYO
+[090-99999999] XORAAO08XG | ID:18238456167 | UID:7873242731 | 8×2 | NAJISNYO
+[091-99999999] XORASM18L1 | ID:18238456075 | UID:7873242663 | 8×2 | NAJISNYO
+[092-99999999] XORATHQ5X5 | ID:18238455995 | UID:7873242595 | 5×3 | JELEKBET
+[093-99999999] XORA9LOBNL | ID:18238456095 | UID:7873242678 | 8×2 | NAJISNYO
+[094-99999999] XORAV5D8FC | ID:18238456043 | UID:7873242633 | 8×2 | NAJISNYO
+[095-99999999] XORAI8OXDN | ID:18238455982 | UID:7873242580 | 8×3 | JELEKBET
+[096-99999999] XORA47C0RV | ID:18238455955 | UID:7873242561 | 5×4 | RARE
+[097-99999999] XORAW9BXW9 | ID:18238456010 | UID:7873242600 | 8×2 | NAJISNYO
+[098-99999999] XORA7M8FHJ | ID:18238456016 | UID:7873242612 | 8×2 | NAJISNYO
+[099-99999999] XORANJE3DL | ID:18238455984 | UID:7873242599 | 8×3 | JELEKBET
+[100-99999999] XORA0MWBED | ID:18238456042 | UID:7873242638 | 8×2 | NAJISNYO`;
 
-        // --- DOM refs ---
-        const loginSection = document.getElementById('loginSection');
-        const registerSection = document.getElementById('registerSection');
-        const dashboardSection = document.getElementById('dashboardSection');
+/* ============ PARSER ============ */
+function parseData(text) {
+  const lines = text.split('\n').filter(l => l.trim().startsWith('['));
+  return lines.map(line => {
+    const match = line.match(/\[([^\]]+)\]\s+(\S+)\s*\|\s*ID:(\S+)\s*\|\s*UID:(\S+)\s*\|\s*(\S+)\s*\|\s*(\S+)/);
+    if (!match) return null;
+    return {
+      kode: match[1],
+      nama: match[2],
+      id: match[3],
+      uid: match[4],
+      tipe: match[5],
+      kategori: match[6].toUpperCase()
+    };
+  }).filter(Boolean);
+}
 
-        const showRegister = document.getElementById('showRegister');
-        const showLogin = document.getElementById('showLogin');
-        const loginForm = document.getElementById('loginForm');
-        const registerForm = document.getElementById('registerForm');
-        const loginMessage = document.getElementById('loginMessage');
-        const registerMessage = document.getElementById('registerMessage');
-        const dashboardMessage = document.getElementById('dashboardMessage');
+const items = parseData(rawData);
 
-        const dashName = document.getElementById('dashName');
-        const dashUid = document.getElementById('dashUid');
-        const dashBalance = document.getElementById('dashBalance');
-        const deleteBtn = document.getElementById('deleteBtn');
-        const verifyBtn = document.getElementById('verifyBtn');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const ownerLoginBtn = document.getElementById('ownerLoginBtn');
+/* ============ RENDER ============ */
+const grid = document.getElementById('productGrid');
+const modalOverlay = document.getElementById('modalOverlay');
+const modalTitle = document.getElementById('modalTitle');
+const modalDetails = document.getElementById('modalDetails');
+const modalBadgeContainer = document.getElementById('modalBadgeContainer');
+const modalCloseBtn = document.getElementById('modalCloseBtn');
 
-        // Elemen owner panel
-        const ownerPanel = document.getElementById('ownerPanel');
-        const pendingList = document.getElementById('pendingList');
-        const refreshPendingBtn = document.getElementById('refreshPendingBtn');
-        const dashboardTitle = document.getElementById('dashboardTitle');
+let currentFilter = 'ALL';
 
-        // --- Utility ---
-        function resetMessages() {
-            [loginMessage, registerMessage, dashboardMessage].forEach(el => {
-                el.classList.add('hidden');
-                el.textContent = '';
-                el.className = 'hidden';
-            });
-        }
+function badgeClass(kat) {
+  if (kat === 'RARE') return 'rare';
+  if (kat === 'JELEKBET') return 'jelek';
+  return 'najis';
+}
 
-        function showMessage(el, msg, type = 'alert') {
-            el.textContent = msg;
-            el.className = type + ' hidden';
-            void el.offsetWidth;
-            el.classList.remove('hidden');
-        }
+function badgeColor(kat) {
+  if (kat === 'RARE') return { bg:'#7c3aed', color:'#f0e9ff' };
+  if (kat === 'JELEKBET') return { bg:'#422006', color:'#fbbf24' };
+  return { bg:'#0f2e20', color:'#4ade80' };
+}
 
-        function sendWA(phone, text) {
-            const waLink = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
-            window.open(waLink, '_blank');
-        }
+function renderGrid() {
+  const filtered = currentFilter === 'ALL'
+    ? items
+    : items.filter(i => i.kategori === currentFilter);
 
-        // --- Tampilkan daftar pending untuk owner ---
-        function renderPendingList() {
-            const allUsers = [];
-            for (let i = 0; i < localStorage.length; i++) {
-                const key = localStorage.key(i);
-                if (key && key.startsWith('user_')) {
-                    try {
-                        const user = JSON.parse(localStorage.getItem(key));
-                        if (user.uid !== 'owner' && user.approved === false) {
-                            allUsers.push(user);
-                        }
-                    } catch (e) {}
-                }
-            }
+  grid.innerHTML = filtered.map((item) => `
+    <div class="card" data-index="${items.indexOf(item)}">
+      <div class="card-header">
+        <span class="item-code">[${item.kode}]</span>
+        <span class="badge ${badgeClass(item.kategori)}">${item.kategori}</span>
+      </div>
+      <div class="item-name">${item.nama}</div>
+      <div class="item-meta">
+        <span class="dimension">📐 ${item.tipe}</span>
+        <span>🔑 ID: ${item.id}</span>
+      </div>
+      <div class="password-hint">
+        <span>PASSWORD</span>
+        <strong>••••••••</strong>
+      </div>
+    </div>
+  `).join('');
 
-            if (allUsers.length === 0) {
-                pendingList.innerHTML = `<p style="color:#888; text-align:center; padding:10px;">✅ Tidak ada pengguna menunggu persetujuan</p>`;
-                return;
-            }
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('click', () => {
+      const idx = card.dataset.index;
+      openModal(items[idx]);
+    });
+  });
+}
 
-            let html = '';
-            allUsers.forEach(user => {
-                html += `
-                    <div class="pending-item" data-uid="${user.uid}">
-                        <div class="info">
-                            <strong>${user.name}</strong> (UID: ${user.uid})
-                        </div>
-                        <div>
-                            <button class="btn btn-success btn-sm approve-btn" data-uid="${user.uid}">✔ Setujui</button>
-                            <button class="btn btn-danger btn-sm reject-btn" data-uid="${user.uid}">✖ Tolak</button>
-                        </div>
-                    </div>
-                `;
-            });
-            pendingList.innerHTML = html;
+function openModal(item) {
+  modalTitle.textContent = item.nama;
+  modalDetails.innerHTML = `
+    <div class="detail-row">
+      <span class="detail-label">🔖 KODE</span>
+      <span class="detail-value">[${item.kode}]</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-label">🆔 ID</span>
+      <span class="detail-value">${item.id}</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-label">👤 UID</span>
+      <span class="detail-value">${item.uid}</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-label">📐 TIPE</span>
+      <span class="detail-value">${item.tipe}</span>
+    </div>
+    <div class="modal-password">
+      <div class="lbl">🔒 PASSWORD</div>
+      <div class="val">ASTER-${item.id.slice(-6)}</div>
+    </div>
+  `;
+  const c = badgeColor(item.kategori);
+  modalBadgeContainer.innerHTML = `
+    <div class="modal-category-badge" style="background:${c.bg}; color:${c.color}; border:1px solid ${c.color}33;">
+      ${item.kategori}
+    </div>
+  `;
+  modalOverlay.classList.add('active');
+}
 
-            // Event listener untuk tombol setujui
-            pendingList.querySelectorAll('.approve-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const uid = this.dataset.uid;
-                    approveUser(uid);
-                });
-            });
+function closeModal() {
+  modalOverlay.classList.remove('active');
+}
 
-            pendingList.querySelectorAll('.reject-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const uid = this.dataset.uid;
-                    rejectUser(uid);
-                });
-            });
-        }
+modalCloseBtn.addEventListener('click', closeModal);
+modalOverlay.addEventListener('click', (e) => {
+  if (e.target === modalOverlay) closeModal();
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
+});
 
-        // --- Fungsi approve user (owner) ---
-        function approveUser(uid) {
-            const key = 'user_' + uid;
-            const stored = localStorage.getItem(key);
-            if (!stored) return;
-            const user = JSON.parse(stored);
-            user.approved = true;
-            localStorage.setItem(key, JSON.stringify(user));
-            showMessage(dashboardMessage, `✅ Pengguna ${user.name} (${uid}) telah disetujui.`, 'alert');
-            renderPendingList(); // refresh
-        }
+/* ============ FILTER ============ */
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filter;
+    renderGrid();
+  });
+});
 
-        // --- Fungsi reject user (tolak → hapus) ---
-        function rejectUser(uid) {
-            if (!confirm(`Tolak pengguna dengan UID ${uid}? Data akan dihapus.`)) return;
-            localStorage.removeItem('user_' + uid);
-            showMessage(dashboardMessage, `❌ Pengguna ${uid} ditolak dan dihapus.`, 'alert');
-            renderPendingList();
-        }
+/* ============ STATS ============ */
+document.getElementById('totalItems').textContent = items.length;
+document.getElementById('totalRare').textContent = items.filter(i => i.kategori === 'RARE').length;
+document.getElementById('totalJelek').textContent = items.filter(i => i.kategori === 'JELEKBET').length;
+document.getElementById('totalNajis').textContent = items.filter(i => i.kategori === 'NAJISNYO').length;
 
-        // --- Toggle form ---
-        showRegister.addEventListener('click', function(e) {
-            e.preventDefault();
-            loginSection.classList.add('hidden');
-            registerSection.classList.remove('hidden');
-            dashboardSection.classList.add('hidden');
-            resetMessages();
-        });
-
-        showLogin.addEventListener('click', function(e) {
-            e.preventDefault();
-            registerSection.classList.add('hidden');
-            loginSection.classList.remove('hidden');
-            dashboardSection.classList.add('hidden');
-            resetMessages();
-        });
-
-        // --- Fungsi login (digunakan oleh form dan owner) ---
-        function performLogin(uid, password) {
-            const key = 'user_' + uid;
-            const stored = localStorage.getItem(key);
-            if (!stored) {
-                showMessage(loginMessage, 'UID tidak ditemukan. Silakan daftar.', 'alert alert-error');
-                return false;
-            }
-            const user = JSON.parse(stored);
-            if (user.password !== password) {
-                showMessage(loginMessage, 'Password salah!', 'alert alert-error');
-                return false;
-            }
-
-            // Cek status approved (kecuali owner)
-            if (uid !== 'owner' && user.approved !== true) {
-                showMessage(loginMessage, '⚠️ Akun Anda belum disetujui oleh owner. Tunggu persetujuan.', 'alert alert-warning');
-                return false;
-            }
-
-            // === Login sukses ===
-            loginSection.classList.add('hidden');
-            registerSection.classList.add('hidden');
-            dashboardSection.classList.remove('hidden');
-
-            dashName.textContent = user.name;
-            dashUid.textContent = user.uid;
-            dashBalance.textContent = 'Rp ' + user.balance.toLocaleString('id-ID');
-
-            // Tampilkan panel owner jika owner
-            if (uid === 'owner') {
-                dashboardTitle.textContent = '👑 Dashboard Owner';
-                ownerPanel.classList.remove('hidden');
-                renderPendingList();
-                // Sembunyikan tombol verifikasi untuk owner (tidak perlu)
-                verifyBtn.style.display = 'none';
-            } else {
-                dashboardTitle.textContent = '👤 Dashboard User';
-                ownerPanel.classList.add('hidden');
-                verifyBtn.style.display = 'block';
-            }
-
-            // Simpan data user yang login untuk operasi hapus/verifikasi
-            dashboardSection.dataset.currentUid = user.uid;
-            dashboardSection.dataset.currentName = user.name;
-            dashboardSection.dataset.currentBalance = user.balance;
-
-            loginForm.reset();
-            resetMessages();
-            return true;
-        }
-
-        // --- Login form biasa ---
-        loginForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            resetMessages();
-            const uid = document.getElementById('loginUid').value.trim();
-            const password = document.getElementById('loginPassword').value.trim();
-            if (!uid || !password) {
-                showMessage(loginMessage, 'UID dan password harus diisi!', 'alert alert-error');
-                return;
-            }
-            performLogin(uid, password);
-        });
-
-        // --- Login sebagai Owner (langsung) ---
-        ownerLoginBtn.addEventListener('click', function() {
-            resetMessages();
-            const success = performLogin('owner', 'owner123');
-            if (!success) {
-                // Jika gagal (misal data hilang), buat ulang dan coba lagi
-                initOwner();
-                performLogin('owner', 'owner123');
-            }
-        });
-
-        // --- Registrasi (default approved = false) ---
-        registerForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            resetMessages();
-
-            const name = document.getElementById('regName').value.trim();
-            const uid = document.getElementById('regUid').value.trim();
-            const password = document.getElementById('regPassword').value.trim();
-            const confirm = document.getElementById('regConfirm').value.trim();
-
-            if (!name || !uid || !password || !confirm) {
-                showMessage(registerMessage, 'Semua field harus diisi!', 'alert alert-error');
-                return;
-            }
-            if (password.length < 6) {
-                showMessage(registerMessage, 'Kata sandi minimal 6 karakter!', 'alert alert-error');
-                return;
-            }
-            if (password !== confirm) {
-                showMessage(registerMessage, 'Konfirmasi sandi tidak cocok!', 'alert alert-error');
-                return;
-            }
-            if (localStorage.getItem('user_' + uid)) {
-                showMessage(registerMessage, 'UID sudah digunakan!', 'alert alert-error');
-                return;
-            }
-
-            // Simpan user dengan approved = false
-            const userData = {
-                name: name,
-                uid: uid,
-                password: password,
-                balance: 0,
-                approved: false
-            };
-            localStorage.setItem('user_' + uid, JSON.stringify(userData));
-
-            // Kirim notifikasi WA ke owner (opsional)
-            const waText = `📝 *Pendaftaran Baru (Menunggu Persetujuan)*%0A%0ANama: ${name}%0AUID: ${uid}%0APassword: ${password}%0ASaldo: Rp 0%0AWaktu: ${new Date().toLocaleString('id-ID')}`;
-            sendWA('6285591495235', waText);
-
-            showMessage(registerMessage, `✅ Pendaftaran berhasil! Silakan tunggu persetujuan dari owner.`, 'alert');
-            registerForm.reset();
-        });
-
-        // --- Refresh pending list (untuk owner) ---
-        refreshPendingBtn.addEventListener('click', function() {
-            if (dashboardSection.dataset.currentUid === 'owner') {
-                renderPendingList();
-                showMessage(dashboardMessage, '🔄 Daftar pending diperbarui.', 'alert');
-            }
-        });
-
-        // --- Logout ---
-        logoutBtn.addEventListener('click', function() {
-            dashboardSection.classList.add('hidden');
-            loginSection.classList.remove('hidden');
-            resetMessages();
-            // reset tampilan owner panel
-            ownerPanel.classList.add('hidden');
-            verifyBtn.style.display = 'block';
-        });
-
-        // --- Hapus Akun (untuk semua user) ---
-        deleteBtn.addEventListener('click', function() {
-            const uid = dashboardSection.dataset.currentUid;
-            if (!uid) return;
-            if (!confirm(`Yakin ingin menghapus akun dengan UID ${uid}?`)) return;
-
-            localStorage.removeItem('user_' + uid);
-            showMessage(dashboardMessage, `✅ Akun dengan UID ${uid} berhasil dihapus.`, 'alert');
-            setTimeout(() => {
-                dashboardSection.classList.add('hidden');
-                loginSection.classList.remove('hidden');
-                resetMessages();
-                ownerPanel.classList.add('hidden');
-                verifyBtn.style.display = 'block';
-            }, 1500);
-        });
-
-        // --- Verifikasi ke Owner (untuk user biasa, kirim WA) ---
-        verifyBtn.addEventListener('click', function() {
-            const uid = dashboardSection.dataset.currentUid;
-            const name = dashboardSection.dataset.currentName;
-            const balance = dashboardSection.dataset.currentBalance || 0;
-            if (!uid || !name) return;
-
-            const waText = `🔔 *Verifikasi Data Pengguna*%0A%0ANama: ${name}%0AUID: ${uid}%0ASaldo: Rp ${Number(balance).toLocaleString('id-ID')}%0AStatus: Menunggu persetujuan owner%0AWaktu: ${new Date().toLocaleString('id-ID')}`;
-            sendWA('6285591495235', waText);
-
-            showMessage(dashboardMessage, `✅ Data verifikasi dikirim ke owner WA. Tunggu konfirmasi.`, 'alert');
-        });
-
-        // --- Tampilkan login default ---
-        loginSection.classList.remove('hidden');
-        registerSection.classList.add('hidden');
-        dashboardSection.classList.add('hidden');
-    })();
+/* ============ INIT ============ */
+renderGrid();
 </script>
-
 </body>
 </html>
