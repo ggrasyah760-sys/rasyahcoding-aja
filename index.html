@@ -1,448 +1,321 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ASTER STORE • PREMIUM ACCOUNT</title>
-<style>
-  * { margin:0; padding:0; box-sizing:border-box; font-family:'Inter',system-ui,sans-serif; }
-  body {
-    background: radial-gradient(circle at top, #131a2b, #070a12 70%);
-    color:#eef2ff; padding:1.5rem; min-height:100vh;
-  }
-  .store-header {
-    display:flex; flex-wrap:wrap; justify-content:space-between;
-    align-items:center; margin-bottom:1.5rem; padding-bottom:1rem;
-    border-bottom:1px solid #1f2a3d;
-  }
-  .brand { display:flex; align-items:center; gap:0.9rem; }
-  .brand-icon {
-    width:52px; height:52px; border-radius:16px;
-    background:linear-gradient(135deg,#6d8cff,#a855f7);
-    display:flex; align-items:center; justify-content:center;
-    font-weight:800; font-size:1.7rem; color:#0b0f1a;
-    box-shadow:0 8px 24px rgba(109,140,255,0.35);
-  }
-  .brand-text h1 {
-    font-size:1.7rem; font-weight:800; letter-spacing:-0.5px;
-    background:linear-gradient(to right,#fff,#c7d2fe);
-    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-  }
-  .brand-text span { font-size:0.78rem; color:#7c8db3; letter-spacing:1px; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Untuk Pacarku 💐</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  .signal-badge {
-    background:#141c2c; border:1px solid #263248;
-    padding:0.6rem 1.1rem; border-radius:100px; font-size:0.85rem;
-    display:flex; align-items:center; gap:0.5rem; color:#b9c7e0;
-  }
-  .signal-dot {
-    width:8px; height:8px; background:#22c55e; border-radius:50%;
-    box-shadow:0 0 8px #22c55e; animation:pulse 1.8s infinite;
-  }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+    body {
+      font-family: 'Georgia', serif;
+      background: #fdf0f5;
+      overflow-x: hidden;
+      position: relative;
+      min-height: 100vh;
+    }
 
-  .stats { display:flex; flex-wrap:wrap; gap:0.8rem; margin-bottom:1.2rem; }
-  .stat-card {
-    flex:1; min-width:120px; background:#101827;
-    border:1px solid #1f2a3d; border-radius:16px;
-    padding:0.9rem 1rem; text-align:center;
-  }
-  .stat-card h3 { font-size:1.5rem; font-weight:800; color:#8ea9ff; }
-  .stat-card p { font-size:0.7rem; color:#7c8db3; letter-spacing:0.5px; margin-top:0.2rem; }
+    /* Background bucket bunga - pola bunga */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-image: 
+        radial-gradient(circle at 20% 30%, rgba(255,182,193,0.4) 0%, transparent 25%),
+        radial-gradient(circle at 80% 20%, rgba(255,105,180,0.3) 0%, transparent 30%),
+        radial-gradient(circle at 50% 80%, rgba(221,160,221,0.3) 0%, transparent 35%),
+        radial-gradient(circle at 10% 90%, rgba(255,218,185,0.4) 0%, transparent 25%),
+        radial-gradient(circle at 90% 70%, rgba(255,192,203,0.35) 0%, transparent 30%),
+        radial-gradient(circle at 40% 50%, rgba(255,228,225,0.5) 0%, transparent 40%);
+      z-index: -2;
+    }
 
-  .filter-bar { display:flex; flex-wrap:wrap; gap:0.6rem; margin-bottom:1.2rem; }
-  .filter-btn {
-    background:#141c2c; border:1px solid #263248; color:#b9c7e0;
-    padding:0.5rem 1.1rem; border-radius:100px; font-size:0.8rem;
-    cursor:pointer; transition:.2s; font-weight:600;
-  }
-  .filter-btn:hover { background:#1c2740; color:#fff; }
-  .filter-btn.active { background:#6d8cff; color:#0b0f1a; border-color:#6d8cff; }
+    /* Bucket bunga di sudut */
+    .bucket {
+      position: fixed;
+      font-size: 80px;
+      z-index: -1;
+      opacity: 0.55;
+      animation: sway 4s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .bucket1 { top: 10px; left: 10px; animation-delay: 0s; }
+    .bucket2 { top: 10px; right: 10px; animation-delay: 1s; }
+    .bucket3 { bottom: 10px; left: 10px; animation-delay: 2s; }
+    .bucket4 { bottom: 10px; right: 10px; animation-delay: 3s; }
 
-  .grid {
-    display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
-    gap:1rem;
-  }
-  .card {
-    background:#101827; border:1px solid #1f2a3d; border-radius:18px;
-    padding:1.1rem; cursor:pointer; transition:.2s;
-    display:flex; flex-direction:column; gap:0.6rem;
-    position:relative; overflow:hidden;
-  }
-  .card::before {
-    content:''; position:absolute; top:0; left:0; width:100%; height:3px;
-    background:linear-gradient(90deg,#6d8cff,#a855f7);
-  }
-  .card:hover {
-    transform:translateY(-4px); background:#162034;
-    border-color:#3b4e6b; box-shadow:0 18px 30px -12px #000;
-  }
-  .card-header { display:flex; justify-content:space-between; align-items:center; gap:0.4rem; }
-  .item-code {
-    font-family:'JetBrains Mono',monospace; font-size:0.68rem;
-    background:#1a2438; padding:0.25rem 0.6rem; border-radius:100px;
-    color:#8ea9ff; border:1px solid #2a3a55; white-space:nowrap;
-  }
-  .badge {
-    font-size:0.65rem; font-weight:700; padding:0.25rem 0.65rem;
-    border-radius:100px; letter-spacing:0.3px; white-space:nowrap;
-  }
-  .badge.rare { background:#7c3aed; color:#f0e9ff; box-shadow:0 0 10px #8b5cf6aa; }
-  .badge.jelek { background:#422006; color:#fbbf24; border:1px solid #b45309; }
-  .badge.najis { background:#0f2e20; color:#4ade80; border:1px solid #14532d; }
+    @keyframes sway {
+      0%, 100% { transform: rotate(-5deg) scale(1); }
+      50% { transform: rotate(5deg) scale(1.05); }
+    }
 
-  .item-name {
-    font-family:'JetBrains Mono',monospace; font-size:1rem;
-    font-weight:700; color:#f0f4ff; word-break:break-all;
-  }
-  .item-meta { display:flex; flex-wrap:wrap; gap:0.5rem; font-size:0.78rem; color:#a0b3d9; }
-  .dimension {
-    background:#1e293b; padding:0.15rem 0.55rem; border-radius:8px;
-    font-weight:600; color:#cbd5e1; font-size:0.72rem;
-  }
-  .password-hint {
-    font-size:0.63rem; color:#5b6e8c; border-top:1px dashed #253040;
-    padding-top:0.55rem; display:flex; justify-content:space-between; align-items:center;
-    gap:0.4rem;
-  }
-  .password-hint strong { color:#d9e2f0; font-family:monospace; word-break:break-all; }
+    /* Bunga jatuh */
+    .flower {
+      position: fixed;
+      top: -50px;
+      font-size: 24px;
+      animation: fall linear infinite;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.8;
+    }
 
-  .modal-overlay {
-    position:fixed; inset:0; background:rgba(0,0,0,0.82);
-    backdrop-filter:blur(6px); display:none; align-items:center;
-    justify-content:center; padding:1.5rem; z-index:1000;
-  }
-  .modal-overlay.active { display:flex; }
-  .modal-card {
-    background:#101827; border:1px solid #2c3b52; border-radius:26px;
-    max-width:440px; width:100%; padding:2rem 1.8rem;
-    box-shadow:0 30px 60px -15px #000; position:relative;
-    animation:fade .2s ease;
-  }
-  @keyframes fade { from{opacity:0; transform:scale(.95)} to{opacity:1; transform:scale(1)} }
-  .modal-close {
-    position:absolute; top:1rem; right:1.2rem; background:none; border:none;
-    color:#6b7c9e; font-size:1.8rem; cursor:pointer; line-height:1;
-  }
-  .modal-close:hover { color:#fff; }
-  .modal-title {
-    font-size:1.3rem; font-weight:800; font-family:'JetBrains Mono',monospace;
-    margin-bottom:1.3rem; color:#fff; word-break:break-all;
-    border-left:5px solid #6d8cff; padding-left:1rem;
-  }
-  .detail-row {
-    display:flex; justify-content:space-between; align-items:center;
-    padding:0.8rem 0; border-bottom:1px solid #1e2a3a; font-size:0.88rem;
-    gap:0.8rem;
-  }
-  .detail-label { color:#8496b5; font-weight:500; white-space:nowrap; }
-  .detail-value {
-    font-family:'JetBrains Mono',monospace; font-weight:600; color:#dbe7ff;
-    background:#1a2438; padding:0.25rem 0.75rem; border-radius:40px;
-    font-size:0.82rem; border:1px solid #2f405a; word-break:break-all;
-    text-align:right;
-  }
-  .modal-category-badge {
-    display:inline-block; margin-top:1.2rem; padding:0.5rem 1.2rem;
-    border-radius:40px; font-weight:700; font-size:0.85rem;
-  }
-  .modal-password {
-    margin-top:1rem; background:#1a2438; border:1px dashed #2f405a;
-    border-radius:14px; padding:0.9rem 1rem; text-align:center;
-  }
-  .modal-password .lbl { font-size:0.7rem; color:#7c8db3; letter-spacing:1px; }
-  .modal-password .val {
-    font-family:'JetBrains Mono',monospace; font-size:1.05rem;
-    font-weight:700; color:#8ea9ff; margin-top:0.3rem; word-break:break-all;
-  }
+    @keyframes fall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0.3; }
+    }
 
-  @media (max-width:480px) {
-    body { padding:1rem; }
-    .brand-text h1 { font-size:1.3rem; }
-    .grid { grid-template-columns:1fr; }
-    .modal-card { padding:1.5rem; }
-  }
-</style>
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+      position: relative;
+      z-index: 2;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.2rem;
+      color: #c2185b;
+      text-shadow: 2px 2px 4px rgba(255,255,255,0.8);
+      margin-bottom: 10px;
+      animation: fadeInDown 1.5s ease;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #ad1457;
+      font-style: italic;
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+      animation: fadeInDown 2s ease;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Video player */
+    .video-wrapper {
+      background: rgba(255,255,255,0.75);
+      border-radius: 20px;
+      padding: 15px;
+      margin-bottom: 35px;
+      box-shadow: 0 8px 25px rgba(194,24,91,0.2);
+      border: 2px solid #f8bbd0;
+      animation: fadeIn 2s ease;
+    }
+
+    .video-wrapper iframe {
+      width: 100%;
+      height: 400px;
+      border-radius: 12px;
+      border: none;
+      display: block;
+    }
+
+    .video-note {
+      text-align: center;
+      font-size: 0.85rem;
+      color: #8e24aa;
+      margin-top: 10px;
+      font-style: italic;
+    }
+
+    /* Kartu kata romantis */
+    .card {
+      background: rgba(255,255,255,0.85);
+      border-radius: 18px;
+      padding: 22px 25px;
+      margin-bottom: 20px;
+      box-shadow: 0 6px 20px rgba(194,24,91,0.15);
+      border-left: 6px solid #f06292;
+      animation: fadeIn 1.5s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 28px rgba(194,24,91,0.3);
+    }
+
+    .card p {
+      font-size: 1.08rem;
+      line-height: 1.7;
+      color: #4a148c;
+      font-style: italic;
+    }
+
+    .card .emoji {
+      font-size: 1.4rem;
+      margin-right: 6px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .signature {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 1.2rem;
+      color: #c2185b;
+      font-style: italic;
+      animation: fadeIn 3s ease;
+    }
+
+    .heart {
+      display: inline-block;
+      animation: beat 1.2s ease infinite;
+      color: #e91e63;
+    }
+
+    @keyframes beat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.25); }
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 1.6rem; }
+      .video-wrapper iframe { height: 220px; }
+      .bucket { font-size: 50px; }
+      .card p { font-size: 0.98rem; }
+    }
+  </style>
 </head>
 <body>
 
-<header class="store-header">
-  <div class="brand">
-    <div class="brand-icon">A</div>
-    <div class="brand-text">
-      <h1>ASTER STORE</h1>
-      <span>PREMIUM ACCOUNT • ASTER SAESTU</span>
+  <!-- Bucket bunga di sudut -->
+  <div class="bucket bucket1">💐</div>
+  <div class="bucket bucket2">🌷</div>
+  <div class="bucket bucket3">🌹</div>
+  <div class="bucket bucket4">🌸</div>
+
+  <!-- Bunga jatuh (dibuat via JS) -->
+
+  <div class="container">
+    <h1>💐 Untuk Kamu, Cintaku 💐</h1>
+    <p class="subtitle">Sebuket kata &amp; bunga untuk orang paling istimewa</p>
+
+    <!-- Video Player -->
+    <div class="video-wrapper">
+      <!-- Ganti ID video di bawah dengan ID file Google Drive kamu -->
+      <!-- Format: https://drive.google.com/file/d/ID_FILE/preview -->
+      <iframe 
+        src="https://drive.google.com/file/d/1zNbYDU-1G2T8AaD5q5ScK8_2PEbbUUlJ/preview" 
+        allow="autoplay; encrypted-media" 
+        allowfullscreen>
+      </iframe>
+      <p class="video-note">🎬 Tekan tombol play di video untuk memutar kenangan kita</p>
     </div>
+
+    <!-- Kata-kata Romantis -->
+    <div class="card">
+      <p><span class="emoji">🌹</span>Setiap bunga di dunia ini tidak akan pernah secantik senyummu di mataku. Kamu adalah taman bunga yang selalu mekar di hatiku.</p>
+    </div>
+
+    <div class="card">
+      <p><span class="emoji">💐</span>Kalau aku diberi sebutir bunga untuk setiap kali aku memikirkanmu, aku akan berjalan di taman yang tidak pernah berakhir.</p>
+    </div>
+
+    <div class="card">
+      <p><span class="emoji">🌷</span>Kamu adalah bunga paling indah yang pernah tumbuh di taman hidupku. Terima kasih sudah mekar di sini, di hati yang selalu merindukanmu.</p>
+    </div>
+
+    <div class="card">
+      <p><span class="emoji">🌸</span>Aku mencintaimu seperti bunga mencintai matahari—tanpa cahayamu, aku tidak akan pernah mekar seindah ini.</p>
+    </div>
+
+    <div class="card">
+      <p><span class="emoji">🌺</span>Di antara jutaan bunga yang ada, hanya kamu yang membuat hatiku berdebar. Kamu adalah bucket bunga terindah dalam hidupku.</p>
+    </div>
+
+    <div class="card">
+      <p><span class="emoji">💖</span>Setiap kelopak bunga yang jatuh mengingatkanku pada setiap detik yang ingin kuhabiskan bersamamu. Selamanya.</p>
+    </div>
+
+    <div class="card">
+      <p><span class="emoji">🌼</span>Kamu bukan hanya cinta dalam hidupku, kamu adalah alasan aku percaya bahwa cinta itu nyata dan seindah bunga yang bermekaran.</p>
+    </div>
+
+    <div class="card">
+      <p><span class="emoji">💕</span>Jika cinta adalah sebuah taman, maka kamu adalah bunga mawar yang paling wangi, yang selalu ingin kurawat seumur hidupku.</p>
+    </div>
+
+    <div class="card">
+      <p><span class="emoji">🥀</span>Bahkan bunga yang paling cantik pun akan layu, tapi cintaku padamu akan selalu segar seperti bunga yang baru mekar setiap pagi.</p>
+    </div>
+
+    <div class="card">
+      <p><span class="emoji">🌻</span>Kamu adalah matahari bagiku—selalu menghadap ke arahmu, selalu mencari kehangatanmu, selalu mencintaimu tanpa syarat.</p>
+    </div>
+
+    <div class="card">
+      <p><span class="emoji">💗</span>Aku ingin menjadi bucket bunga yang selalu kamu peluk, tempat kamu menuangkan semua cerita dan rasa, sampai kapan pun.</p>
+    </div>
+
+    <div class="card">
+      <p><span class="emoji">🦋</span>Seperti kupu-kupu yang hinggap di bunga, hatiku selalu kembali padamu. Kamu adalah tempat pulangku yang paling indah.</p>
+    </div>
+
+    <div class="card">
+      <p><span class="emoji">🌿</span>Terima kasih sudah menjadi bunga di taman hidupku. Bersamamu, setiap hari terasa seperti musim semi yang tidak pernah berakhir.</p>
+    </div>
+
+    <div class="card">
+      <p><span class="emoji">💝</span>Aku tidak butuh sejuta bunga untuk membuatmu bahagia. Aku hanya butuh kamu—karena kamu adalah bunga terindah yang pernah ada.</p>
+    </div>
+
+    <div class="card">
+      <p><span class="emoji">🌺</span>Setiap kali aku melihat bunga, aku selalu ingat kamu. Karena kamu adalah bunga yang selalu mekar di setiap sudut pikiranku.</p>
+    </div>
+
+    <div class="card">
+      <p><span class="emoji">💞</span>Cinta kita seperti bucket bunga—penuh warna, penuh wangi, dan selalu indah dilihat dari sudut mana pun. Aku mencintaimu.</p>
+    </div>
+
+    <div class="card">
+      <p><span class="emoji">🌹</span>Kamu adalah mawar yang tidak pernah layu di hatiku. Setiap durimu adalah pelajaran, dan setiap kelopaknya adalah cinta.</p>
+    </div>
+
+    <div class="card">
+      <p><span class="emoji">💓</span>Aku ingin menua bersamamu, seperti bunga yang tetap cantik meski musim berganti. Kamu adalah cinta seumur hidupku.</p>
+    </div>
+
+    <div class="card">
+      <p><span class="emoji">🌷</span>Di hari yang biasa pun, kamu membuat hidupku terasa seperti taman bunga yang penuh keajaiban. Terima kasih sudah ada.</p>
+    </div>
+
+    <div class="card">
+      <p><span class="emoji">💘</span>Kamu adalah bunga pertama yang membuatku percaya bahwa cinta itu nyata. Dan kamu akan menjadi bunga terakhir yang selalu kurawat.</p>
+    </div>
+
+    <p class="signature">Dengan sejuta cinta, <br> Dari aku yang selalu merindukanmu <span class="heart">❤️</span></p>
   </div>
-  <div class="signal-badge">
-    <span class="signal-dot"></span>
-    <span>Sinyal 16ms • Online</span>
-  </div>
-</header>
 
-<div class="stats">
-  <div class="stat-card"><h3 id="totalItems">0</h3><p>TOTAL ITEM</p></div>
-  <div class="stat-card"><h3 id="totalRare">0</h3><p>RARE</p></div>
-  <div class="stat-card"><h3 id="totalJelek">0</h3><p>JELEKBET</p></div>
-  <div class="stat-card"><h3 id="totalNajis">0</h3><p>NAJISNYO</p></div>
-</div>
+  <script>
+    // Membuat bunga jatuh secara dinamis
+    const flowerEmojis = ['🌸', '🌷', '🌹', '💐', '🌺', '🌼', '🌻', '🏵️', '💮', '🪷'];
+    const totalFlowers = 25;
 
-<div class="filter-bar">
-  <button class="filter-btn active" data-filter="ALL">SEMUA</button>
-  <button class="filter-btn" data-filter="RARE">RARE</button>
-  <button class="filter-btn" data-filter="JELEKBET">JELEKBET</button>
-  <button class="filter-btn" data-filter="NAJISNYO">NAJISNYO</button>
-</div>
+    for (let i = 0; i < totalFlowers; i++) {
+      const flower = document.createElement('div');
+      flower.className = 'flower';
+      flower.textContent = flowerEmojis[Math.floor(Math.random() * flowerEmojis.length)];
+      flower.style.left = Math.random() * 100 + 'vw';
+      flower.style.animationDuration = (6 + Math.random() * 6) + 's';
+      flower.style.animationDelay = (Math.random() * 8) + 's';
+      flower.style.fontSize = (16 + Math.random() * 20) + 'px';
+      document.body.appendChild(flower);
+    }
+  </script>
 
-<div class="grid" id="productGrid"></div>
-
-<div class="modal-overlay" id="modalOverlay">
-  <div class="modal-card">
-    <button class="modal-close" id="modalCloseBtn">&times;</button>
-    <div class="modal-title" id="modalTitle">—</div>
-    <div id="modalDetails"></div>
-    <div id="modalBadgeContainer"></div>
-  </div>
-</div>
-
-<script>
-/* ============ DATA 100 STOK ============ */
-const rawData = `[001-99999999] XORABGUM8P | ID:18238453412 | UID:7873240048 | 8×2 | NAJISNYO
-[002-99999999] XORANA1FCG | ID:18238453481 | UID:7873240072 | 8×3 | JELEKBET
-[003-99999999] XORACI1Q6S | ID:18238453490 | UID:7873240074 | 8×2 | NAJISNYO
-[004-99999999] XORAJ5NTJ4 | ID:18238453501 | UID:7873240080 | 8×2 | NAJISNYO
-[005-99999999] XORAU37UZ1 | ID:18238453513 | UID:7873240084 | 3×3 | JELEKBET
-[006-99999999] XORAEK20C6 | ID:18238453563 | UID:7873240107 | 3×3 | JELEKBET
-[007-99999999] XORAB8Z89F | ID:18238453696 | UID:7873240133 | 8×2 | NAJISNYO
-[008-99999999] XORAF83M3Q | ID:18238453634 | UID:7873240123 | 3×3 | JELEKBET
-[009-99999999] XORAJI5H04 | ID:18238453692 | UID:7873240132 | 8×2 | NAJISNYO
-[010-99999999] XORAI9BJ7Z | ID:18238453717 | UID:7873240135 | 8×2 | NAJISNYO
-[011-99999999] XORAT140W3 | ID:18238453803 | UID:7873240366 | 8×3 | JELEKBET
-[012-99999999] XORAI5UWLR | ID:18238453829 | UID:7873240412 | 8×3 | JELEKBET
-[013-99999999] XORA93P7IX | ID:18238453861 | UID:7873240494 | 8×3 | JELEKBET
-[014-99999999] XORA3T9DEM | ID:18238453950 | UID:7873240717 | 8×2 | NAJISNYO
-[015-99999999] XORAG72312 | ID:18238454059 | UID:7873240878 | 8×2 | NAJISNYO
-[016-99999999] XORA7RN6ZQ | ID:18238454218 | UID:7873241206 | 8×3 | JELEKBET
-[017-99999999] XORAFF6I8E | ID:18238454408 | UID:7873241463 | 8×3 | JELEKBET
-[018-99999999] XORAOOP4CS | ID:18238454428 | UID:7873241505 | 8×3 | JELEKBET
-[019-99999999] XORAYH7H55 | ID:18238454523 | UID:7873241626 | 8×2 | NAJISNYO
-[020-99999999] XORAH1WN0T | ID:18238454559 | UID:7873241656 | 5×3 | JELEKBET
-[021-99999999] XORAVX2UO8 | ID:18238454630 | UID:7873241701 | 8×2 | NAJISNYO
-[022-99999999] XORA4VOOVA | ID:18238454766 | UID:7873241810 | 8×2 | NAJISNYO
-[023-99999999] XORAG27XR9 | ID:18238454763 | UID:7873241808 | 8×2 | NAJISNYO
-[024-99999999] XORAXB6VPA | ID:18238454857 | UID:7873241878 | 8×3 | JELEKBET
-[025-99999999] XORAX0ABSW | ID:18238454898 | UID:7873241894 | 8×4 | RARE
-[026-99999999] XORAS7RU6P | ID:18238454913 | UID:7873241905 | 8×2 | NAJISNYO
-[027-99999999] XORAG3I6D1 | ID:18238454945 | UID:7873241920 | 4×3 | JELEKBET
-[028-99999999] XORABS87PG | ID:18238454970 | UID:7873241940 | 8×2 | NAJISNYO
-[029-99999999] XORAQI6KDX | ID:18238455018 | UID:7873241973 | 8×3 | JELEKBET
-[030-99999999] XORARDCCGK | ID:18238455076 | UID:7873242016 | 8×2 | NAJISNYO
-[031-99999999] XORAI26ZBI | ID:18238455153 | UID:7873242052 | 5×3 | JELEKBET
-[032-99999999] XORA71YZ1S | ID:18238455194 | UID:7873242069 | 8×2 | NAJISNYO
-[033-99999999] XORAK7XSHY | ID:18238455231 | UID:7873242090 | 8×2 | NAJISNYO
-[034-99999999] XORAA3LNFD | ID:18238455280 | UID:7873242120 | 8×3 | JELEKBET
-[035-99999999] XORAX1C6J3 | ID:18238455311 | UID:7873242141 | 8×2 | NAJISNYO
-[036-99999999] XORAP9JBGJ | ID:18238455319 | UID:7873242144 | 8×2 | NAJISNYO
-[037-99999999] XORAM6KQFA | ID:18238455344 | UID:7873242152 | 4×3 | JELEKBET
-[038-99999999] XORA6LOYYH | ID:18238455366 | UID:7873242166 | 8×2 | NAJISNYO
-[039-99999999] XORANUWOR1 | ID:18238455399 | UID:7873242187 | 8×2 | NAJISNYO
-[040-99999999] XORAVTKPDW | ID:18238455394 | UID:7873242183 | 8×2 | NAJISNYO
-[041-99999999] XORA3S2JBM | ID:18238455438 | UID:7873242208 | 8×3 | JELEKBET
-[042-99999999] XORAUQ31TD | ID:18238455489 | UID:7873242244 | 8×3 | JELEKBET
-[043-99999999] XORA3SJBJN | ID:18238455494 | UID:7873242243 | 4×3 | JELEKBET
-[044-99999999] XORAKQTIW2 | ID:18238455525 | UID:7873242260 | 5×4 | RARE
-[045-99999999] XORA8L7OIX | ID:18238455572 | UID:7873242310 | 5×3 | JELEKBET
-[046-99999999] XORA9LVPYF | ID:18238455591 | UID:7873242319 | 5×3 | JELEKBET
-[047-99999999] XORACZBC7A | ID:18238455603 | UID:7873242329 | 8×2 | NAJISNYO
-[048-99999999] XORAAVOQC3 | ID:18238455606 | UID:7873242330 | 8×2 | NAJISNYO
-[049-99999999] XORA0KQN5C | ID:18238455630 | UID:7873242346 | 8×2 | NAJISNYO
-[050-99999999] XORA4CQR0C | ID:18238455643 | UID:7873242361 | 8×2 | NAJISNYO
-[051-99999999] XORAZ4G1GW | ID:18238455656 | UID:7873242374 | 5×3 | JELEKBET
-[052-99999999] XORABRZPWH | ID:18238455684 | UID:7873242386 | 8×3 | JELEKBET
-[053-99999999] XORA06THMY | ID:18238455693 | UID:7873242397 | 8×2 | NAJISNYO
-[054-99999999] XORARJWETY | ID:18238455713 | UID:7873242414 | 8×2 | NAJISNYO
-[055-99999999] XORAD6YYC3 | ID:18238455741 | UID:7873242437 | 8×2 | NAJISNYO
-[056-99999999] XORAZIZ4AI | ID:18238455762 | UID:7873242453 | 8×2 | NAJISNYO
-[057-99999999] XORAM4MUZC | ID:18238455769 | UID:7873242460 | 8×2 | NAJISNYO
-[058-99999999] XORA6E6O83 | ID:18238455773 | UID:7873242459 | 8×2 | NAJISNYO
-[059-99999999] XORA6D53MO | ID:18238455793 | UID:7873242472 | 8×2 | NAJISNYO
-[060-99999999] XORAV23RO8 | ID:18238455820 | UID:7873242488 | 8×3 | JELEKBET
-[061-99999999] XORAR4NUQK | ID:18238455870 | UID:7873242512 | 8×3 | JELEKBET
-[062-99999999] XORA2ATO6Y | ID:18238455885 | UID:7873242526 | 8×4 | RARE
-[063-99999999] XORACBMJ0W | ID:18238455882 | UID:7873242523 | 8×4 | RARE
-[064-99999999] XORAIBCH3V | ID:18238455905 | UID:7873242535 | 5×3 | JELEKBET
-[065-99999999] XORAYE6FE5 | ID:18238455890 | UID:7873242527 | 8×3 | JELEKBET
-[066-99999999] XORA53OCUQ | ID:18238455973 | UID:7873242590 | 8×2 | NAJISNYO
-[067-99999999] XORANO7M6P | ID:18238455977 | UID:7873242586 | 8×2 | NAJISNYO
-[068-99999999] XORAQ6GZTQ | ID:18238456038 | UID:7873242634 | 8×3 | JELEKBET
-[069-99999999] XORAVQ8KPM | ID:18238456001 | UID:7873242602 | 8×2 | NAJISNYO
-[070-99999999] XORAZIKTNX | ID:18238456005 | UID:7873242594 | 8×2 | NAJISNYO
-[071-99999999] XORAPQ8286 | ID:18238455959 | UID:7873242577 | 5×3 | JELEKBET
-[072-99999999] XORANAC0QB | ID:18238455988 | UID:7873242592 | 8×4 | RARE
-[073-99999999] XORA2EUW0N | ID:18238456026 | UID:7873242621 | 8×2 | NAJISNYO
-[074-99999999] XORA53NM0V | ID:18238456025 | UID:7873242616 | 8×2 | NAJISNYO
-[075-99999999] XORA631GRC | ID:18238455999 | UID:7873242608 | 9×3 | JELEKBET
-[076-99999999] XORAFIVV9V | ID:18238455964 | UID:7873242576 | 8×2 | NAJISNYO
-[077-99999999] XORAGATNQJ | ID:18238455971 | UID:7873242565 | 8×2 | NAJISNYO
-[078-99999999] XORA77RW55 | ID:18238456015 | UID:7873242611 | 8×2 | NAJISNYO
-[079-99999999] XORAM07L5G | ID:18238456062 | UID:7873242651 | 8×2 | NAJISNYO
-[080-99999999] XORAHWAEHD | ID:18238456003 | UID:7873242597 | 8×2 | NAJISNYO
-[081-99999999] XORA5C5HD5 | ID:18238456009 | UID:7873242610 | 8×2 | NAJISNYO
-[082-99999999] XORA2S399Z | ID:18238455929 | UID:7873242548 | 8×2 | NAJISNYO
-[083-99999999] XORA3Q4LN5 | ID:18238455974 | UID:7873242575 | 8×2 | NAJISNYO
-[084-99999999] XORA8LENAO | ID:18238455979 | UID:7873242585 | 8×2 | NAJISNYO
-[085-99999999] XORADOQJO4 | ID:18238456008 | UID:7873242604 | 8×3 | JELEKBET
-[086-99999999] XORASKUGOY | ID:18238455967 | UID:7873242582 | 8×2 | NAJISNYO
-[087-99999999] XORASWY9CT | ID:18238455966 | UID:7873242579 | 8×2 | NAJISNYO
-[088-99999999] XORAM9BTSP | ID:18238455969 | UID:7873242567 | 8×2 | NAJISNYO
-[089-99999999] XORAFM3N29 | ID:18238456012 | UID:7873242613 | 8×2 | NAJISNYO
-[090-99999999] XORAAO08XG | ID:18238456167 | UID:7873242731 | 8×2 | NAJISNYO
-[091-99999999] XORASM18L1 | ID:18238456075 | UID:7873242663 | 8×2 | NAJISNYO
-[092-99999999] XORATHQ5X5 | ID:18238455995 | UID:7873242595 | 5×3 | JELEKBET
-[093-99999999] XORA9LOBNL | ID:18238456095 | UID:7873242678 | 8×2 | NAJISNYO
-[094-99999999] XORAV5D8FC | ID:18238456043 | UID:7873242633 | 8×2 | NAJISNYO
-[095-99999999] XORAI8OXDN | ID:18238455982 | UID:7873242580 | 8×3 | JELEKBET
-[096-99999999] XORA47C0RV | ID:18238455955 | UID:7873242561 | 5×4 | RARE
-[097-99999999] XORAW9BXW9 | ID:18238456010 | UID:7873242600 | 8×2 | NAJISNYO
-[098-99999999] XORA7M8FHJ | ID:18238456016 | UID:7873242612 | 8×2 | NAJISNYO
-[099-99999999] XORANJE3DL | ID:18238455984 | UID:7873242599 | 8×3 | JELEKBET
-[100-99999999] XORA0MWBED | ID:18238456042 | UID:7873242638 | 8×2 | NAJISNYO`;
-
-/* ============ PARSER ============ */
-function parseData(text) {
-  const lines = text.split('\n').filter(l => l.trim().startsWith('['));
-  return lines.map(line => {
-    const match = line.match(/\[([^\]]+)\]\s+(\S+)\s*\|\s*ID:(\S+)\s*\|\s*UID:(\S+)\s*\|\s*(\S+)\s*\|\s*(\S+)/);
-    if (!match) return null;
-    return {
-      kode: match[1],
-      nama: match[2],
-      id: match[3],
-      uid: match[4],
-      tipe: match[5],
-      kategori: match[6].toUpperCase()
-    };
-  }).filter(Boolean);
-}
-
-const items = parseData(rawData);
-
-/* ============ RENDER ============ */
-const grid = document.getElementById('productGrid');
-const modalOverlay = document.getElementById('modalOverlay');
-const modalTitle = document.getElementById('modalTitle');
-const modalDetails = document.getElementById('modalDetails');
-const modalBadgeContainer = document.getElementById('modalBadgeContainer');
-const modalCloseBtn = document.getElementById('modalCloseBtn');
-
-let currentFilter = 'ALL';
-
-function badgeClass(kat) {
-  if (kat === 'RARE') return 'rare';
-  if (kat === 'JELEKBET') return 'jelek';
-  return 'najis';
-}
-
-function badgeColor(kat) {
-  if (kat === 'RARE') return { bg:'#7c3aed', color:'#f0e9ff' };
-  if (kat === 'JELEKBET') return { bg:'#422006', color:'#fbbf24' };
-  return { bg:'#0f2e20', color:'#4ade80' };
-}
-
-function renderGrid() {
-  const filtered = currentFilter === 'ALL'
-    ? items
-    : items.filter(i => i.kategori === currentFilter);
-
-  grid.innerHTML = filtered.map((item) => `
-    <div class="card" data-index="${items.indexOf(item)}">
-      <div class="card-header">
-        <span class="item-code">[${item.kode}]</span>
-        <span class="badge ${badgeClass(item.kategori)}">${item.kategori}</span>
-      </div>
-      <div class="item-name">${item.nama}</div>
-      <div class="item-meta">
-        <span class="dimension">📐 ${item.tipe}</span>
-        <span>🔑 ID: ${item.id}</span>
-      </div>
-      <div class="password-hint">
-        <span>PASSWORD</span>
-        <strong>••••••••</strong>
-      </div>
-    </div>
-  `).join('');
-
-  document.querySelectorAll('.card').forEach(card => {
-    card.addEventListener('click', () => {
-      const idx = card.dataset.index;
-      openModal(items[idx]);
-    });
-  });
-}
-
-function openModal(item) {
-  modalTitle.textContent = item.nama;
-  modalDetails.innerHTML = `
-    <div class="detail-row">
-      <span class="detail-label">🔖 KODE</span>
-      <span class="detail-value">[${item.kode}]</span>
-    </div>
-    <div class="detail-row">
-      <span class="detail-label">🆔 ID</span>
-      <span class="detail-value">${item.id}</span>
-    </div>
-    <div class="detail-row">
-      <span class="detail-label">👤 UID</span>
-      <span class="detail-value">${item.uid}</span>
-    </div>
-    <div class="detail-row">
-      <span class="detail-label">📐 TIPE</span>
-      <span class="detail-value">${item.tipe}</span>
-    </div>
-    <div class="modal-password">
-      <div class="lbl">🔒 PASSWORD</div>
-      <div class="val">ASTER-${item.id.slice(-6)}</div>
-    </div>
-  `;
-  const c = badgeColor(item.kategori);
-  modalBadgeContainer.innerHTML = `
-    <div class="modal-category-badge" style="background:${c.bg}; color:${c.color}; border:1px solid ${c.color}33;">
-      ${item.kategori}
-    </div>
-  `;
-  modalOverlay.classList.add('active');
-}
-
-function closeModal() {
-  modalOverlay.classList.remove('active');
-}
-
-modalCloseBtn.addEventListener('click', closeModal);
-modalOverlay.addEventListener('click', (e) => {
-  if (e.target === modalOverlay) closeModal();
-});
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closeModal();
-});
-
-/* ============ FILTER ============ */
-document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentFilter = btn.dataset.filter;
-    renderGrid();
-  });
-});
-
-/* ============ STATS ============ */
-document.getElementById('totalItems').textContent = items.length;
-document.getElementById('totalRare').textContent = items.filter(i => i.kategori === 'RARE').length;
-document.getElementById('totalJelek').textContent = items.filter(i => i.kategori === 'JELEKBET').length;
-document.getElementById('totalNajis').textContent = items.filter(i => i.kategori === 'NAJISNYO').length;
-
-/* ============ INIT ============ */
-renderGrid();
-</script>
 </body>
 </html>
